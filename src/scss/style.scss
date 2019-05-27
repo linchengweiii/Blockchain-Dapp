@@ -1,0 +1,28 @@
+$primary-color: hsl(0, 0, 0);
+$secondary-color: hsl(0, 0, 0);
+
+@import 'animate';
+@import 'border';
+@import 'color';
+@import 'flex';
+@import 'font';
+@import 'margin';
+@import 'padding';
+@import 'size';
+
+body {
+	margin: 0;
+	padding: 0;
+	background: hsl(0, 0%, 10%);
+}
+
+.cursor-point {
+	cursor: pointer;
+}
+.skew-320 {
+	transform: skew(320deg);
+}
+.fix-end {
+	position: absolute;
+	bottom: 0;
+}

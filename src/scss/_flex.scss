@@ -1,0 +1,20 @@
+.fl-col {
+	display: flex;
+	flex-direction: column;
+}
+.fl-row {
+	display: flex;
+	flex-direction: row;
+}
+.fl-nowrap { flex-wrap: npwrap; }
+.fl-wrap { flex-wrap: wrap; }
+.fl-wrap-r { flex-wrap: wrap-reverse; }
+.fl-end { justify-content: flex-end; }
+.fl-center { justify-content: center; }
+.align-center { align-items: center; }
+.align-end { align-items: flex-end; }
+.align-stretch { align-items: stretch; }
+.fl-1-1 { flex: 1 1 auto; }
+.fl-0-1 { flex: 0 1 auto; }
+.fl-1-0 { flex: 1 0 auto; }
+.fl-0-0 { flex: 0 0 auto; }

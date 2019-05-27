@@ -1,0 +1,26 @@
+$gold: hsl(40, 90%, 30%);
+$blue: hsl(230, 80%, 50%);
+$red: hsl(0, 80%, 50%);
+$dark-red: hsl(0, 70%, 40%);
+$dark-gold: hsl(40, 90%, 15%);
+$dark-grey: hsl(0, 0%, 20%);
+$washed-gold: hsl(40, 100%, 90%);
+$washed-blue: hsl(230, 100%, 95%);
+$hv-washed-blue: hsl(230, 100%, 90%);
+
+.bg-dark-red { background-color: $dark-red; }
+.bg-dark-grey { background-color: $dark-grey; }
+.bg-dark-gold { background-color: $dark-gold; }
+.bg-washed-gold { background-color: $washed-gold; }
+.bg-washed-blue { background-color: $washed-blue; }
+
+.red { color: $red; }
+.dark-red { color: $dark-red; }
+.grey { color: hsl(0, 0%, 30%); }
+.dark-grey { color: $dark-grey; }
+.gold { color: $gold; }
+.blue { color: $blue; }
+.washed-blue { color: $washed_blue; }
+
+.hv-gold:hover { color: $gold; }
+.hv-bg-washed-blue:hover { background-color: $hv-washed-blue; }
