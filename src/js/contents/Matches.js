@@ -11,7 +11,7 @@ class Matches extends Component {
 		this.setState( () => ({ matches: matches }))
 	}
 	addMatch = async() => {
-		var data = {id: 2}
+		var data = {id: this.state.matches.length, contestantA: {name: 'A', point: 0}, contestantB: {name: 'B', point: 0}}
 		var response = await fetch('/add_match', {
 			method: 'POST',
 			headers: {
@@ -34,8 +34,7 @@ class Matches extends Component {
 			</h2>)
 		)
 		return(
-			<div className='washed-blue'>
-				<h2>Matches</h2>
+			<div className='font-sec fl-col align-center'>
 				{matches}
 				<button onClick={this.addMatch}>Add</button>
 			</div>

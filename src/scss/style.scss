@@ -1,5 +1,9 @@
-$primary-color: hsl(0, 0, 0);
-$secondary-color: hsl(0, 0, 0);
+$primary-color: hsl(0, 0, 100%);
+$secondary-color: hsl(50, 10%, 30%);
+$tertiary-color: hsl(50, 90%, 60%);
+
+// import font
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300|Roboto:300|Varela+Round&display=swap');
 
 @import 'animate';
 @import 'border';
@@ -10,10 +14,18 @@ $secondary-color: hsl(0, 0, 0);
 @import 'padding';
 @import 'size';
 
+html {
+	margin: 0;
+	padding: 0;
+	background: $primary-color;
+	color: $secondary-color;
+}
+
 body {
 	margin: 0;
 	padding: 0;
-	background: hsl(0, 0%, 10%);
+	background: $primary-color;
+	color: $secondary-color;
 }
 
 .cursor-point {
