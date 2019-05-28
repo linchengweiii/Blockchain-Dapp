@@ -8,7 +8,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-matches = [{id: 0}, {id: 1}]
+matches = [
+	{id: 0, contestantA: 10, contestantB: 20},
+	{id: 1, contestantA: 20, contestantB: 30}
+]
 
 app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'public', 'index.html'))
@@ -21,6 +24,11 @@ app.get('/matches/:matchId', (req, res) => {
 })
 app.get('/user', (req, res) => {
 	res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
+
+app.get('/matches_data/:matchId', (req, res) => {
+	match_data = matches[req.params.matchId]
+	res.json(match_data)
 })
 app.get('/matches_data', (req, res) => {
 	res.json(matches)

@@ -7,14 +7,14 @@ class Header extends Component {
 	render() {
 		const headers = this.props.contents.map( (content,idx) => 
 			<h2
-				className='washed-blue pd-0-10 cursor-point'
+				className='pd-0-10 font-pri cursor-point'
 				onClick={() => this.changePage(idx)}
 				key={idx}>
 					{content.text}
 			</h2>
 		)
 		return (
-			<div className='fl-row fl-center washed-blue'>
+			<div className='fl-row fl-center'>
 				{headers}
 			</div>
 		)

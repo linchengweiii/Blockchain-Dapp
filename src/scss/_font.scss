@@ -1,8 +1,10 @@
-$primary-font-stack: 'Nunito', sans serif;
-$secondary-font-stack: 'Open Sans', sans serif;
+$primary-font-stack: 'Roboto', sans-serif;
+$secondary-font-stack: 'Open Sans', sans-serif;
+$numeral-font-stack: 'Varela Round', sans-serif;
 
 .font-pri { font-family: $primary-font-stack; }
 .font-sec { font-family: $secondary-font-stack; }
+.font-num { font-family: $numeral-font-stack; }
 .f1 { font-size: 3rem; }
 .f2 { font-size: 2.25rem; }
 .f3 { font-size: 1.5rem; }
