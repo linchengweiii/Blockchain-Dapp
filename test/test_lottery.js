@@ -75,7 +75,7 @@ contract('Lottery', accounts => {
         let betAmount2 = 1.0, betTeam2 = 2
 
         let account1_starting_balance
-        let account2_starting_balance
+        let account2_starting_balance 
         let account1_ending_balance
         let account2_ending_balance
 
@@ -85,66 +85,86 @@ contract('Lottery', accounts => {
             return lot.holdNewLot({from: accounts[0]})
         })
         .then(() => {
-            lot.bet(0, toWei(betAmount1), betTeam1, {from: accounts[1], value: toWei(betAmount1)})
-            lot.bet(0, toWei(betAmount2), betTeam2, {from: accounts[2], value: toWei(betAmount2)})
-            account1_starting_balance = getBalance(accounts[1])
-            account2_starting_balance = getBalance(accounts[2])
-        })
-        .then(() => lot.getRecords.call({ from: accounts[1] }))
-        .then(ret => {
-            let retAmount = ret[0]
-            let retTeam = ret[1]
+            lot.bet(0, toWei(betAmount1), betTeam1, {from: accounts[1], value: toWei(betAmount1)});
+            lot.bet(0, toWei(betAmount2), betTeam2, {from: accounts[2], value: toWei(betAmount2)});
 
-            assert.equal(
-                fromWei(retAmount[0]),
-                betAmount1,
-                'Amount in record of user1 is not correct'
-            )
-            assert.equal(
-                retTeam,
-                betTeam1,
-                'Team in record of user1 is not correct'
-            )
+            ( async () => {
+                account1_starting_balance = await getBalance(accounts[1])
+                account2_starting_balance = await getBalance(accounts[2])
+                lot.payback(0, betTeam1, {from: accounts[0]})
+                account1_ending_balance   = await getBalance(accounts[1])
+                account2_ending_balance   = await getBalance(accounts[2])
+                console.log('hi')
+                console.log(account1_starting_balance)
+                console.log(account1_ending_balance)
+                console.log(account2_starting_balance)
+                console.log(account2_ending_balance)
+                assert.equal(
+                    1.5,
+                    account1_ending_balance - account1_starting_balance,
+                    'Return of user1 is incorrect'
+                )
+                assert.equal(
+                    0,
+                    account2_ending_balance - account2_starting_balance,
+                    'Return of user2 is incorrect'
+                )
+            })();
         })
-        .then(() => lot.getRecords.call({ from: accounts[2] }))
-        .then(ret => {
-            let retAmount = ret[0]
-            let retTeam = ret[1]
-            assert.equal(
-                fromWei(retAmount[0]),
-                betAmount2,
-                'Amount in record of user2 is not correct'
-            )
-            assert.equal(
-                retTeam,
-                betTeam2,
-                'Team in record of user2 is not correct'                
-            )
-        })
-        .then(() => lot.payback(0, 1, {from: accounts[0]}))
-        .then(() => {
-            // web3.eth.getBalance(accounts[1]).then(b => { 
-            //     console.log(fromWei(b))
-            //     account1_ending_balance = fromWei(b)
-            //     console.log(account1_ending_balance) 
-            // })
-            account1_ending_balance = getBalance(accounts[1])
-            console.log(account1_starting_balance)
-            console.log(account1_ending_balance)
-            account2_ending_balance = getBalance(accounts[2])
-            // account1_ending_balance.then(a => console.log(a))
-            // console.log(account2_ending_balance)
-            assert.equal(
-                1.5,
-                account1_ending_balance - account1_starting_balance,
-                'Return of user1 is incorrect'
-            )
-            assert.equal(
-                0,
-                account2_ending_balance - account2_starting_balance,
-                'Return of user2 is incorrect'
-            )
-        })
+        // .then(() => lot.getRecords.call({ from: accounts[1] }))
+        // .then(ret => {
+        //     let retAmount = ret[0]
+        //     let retTeam = ret[1]
+
+        //     assert.equal(
+        //         fromWei(retAmount[0]),
+        //         betAmount1,
+        //         'Amount in record of user1 is not correct'
+        //     )
+        //     assert.equal(
+        //         retTeam,
+        //         betTeam1,
+        //         'Team in record of user1 is not correct'
+        //     )
+        // })
+        // .then(() => lot.getRecords.call({ from: accounts[2] }))
+        // .then(ret => {
+        //     let retAmount = ret[0]
+        //     let retTeam = ret[1]
+        //     assert.equal(
+        //         fromWei(retAmount[0]),
+        //         betAmount2,
+        //         'Amount in record of user2 is not correct'
+        //     )
+        //     assert.equal(
+        //         retTeam,
+        //         betTeam2,
+        //         'Team in record of user2 is not correct'                
+        //     )
+        // })
+        // .then(() => lot.payback(0, 1, {from: accounts[0]}))
+        // .then(() => {
+        //     // web3.eth.getBalance(accounts[1]).then(b => { 
+        //     //     console.log(fromWei(b))
+        //     //     account1_ending_balance = fromWei(b)
+        //     //     console.log(account1_ending_balance) 
+        //     // })
+        //     account1_ending_balance = getBalance(accounts[1])
+        //     console.log(account1_ending_balance)
+        //     account2_ending_balance = getBalance(accounts[2])
+        //     // account1_ending_balance.then(a => console.log(a))
+        //     // console.log(account2_ending_balance)
+        //     assert.equal(
+        //         1.5,
+        //         account1_ending_balance - account1_starting_balance,
+        //         'Return of user1 is incorrect'
+        //     )
+        //     assert.equal(
+        //         0,
+        //         account2_ending_balance - account2_starting_balance,
+        //         'Return of user2 is incorrect'
+        //     )
+        // })
     })
 })
 

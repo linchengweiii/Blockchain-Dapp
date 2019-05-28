@@ -11009,12 +11009,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x990a4Fc2a42e6471F584E41D94b962cFf3CcaF70",
-      "transactionHash": "0xa73b0ddc0b2149cf6c759e5b332b1f1c3bbab563380cfceba6efe9d41d11cf8f"
+      "address": "0x26C1499BC3881155795d09B13d4092Fc36676eDD",
+      "transactionHash": "0x7e0e7f6c5aaf591b20b4eff136414fde1103d3082bcb5a754f343e536ad3b0e1"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-05-27T08:53:39.265Z",
+  "updatedAt": "2019-05-28T05:46:45.113Z",
   "devdoc": {
     "methods": {
       "isOwner()": {
