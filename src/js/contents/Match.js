@@ -4,8 +4,8 @@ import { withRouter } from 'react-router'
 class Match extends Component {
 	state = {
 		id: this.props.match.params.matchId,
-		contestantA: 0,
-		contestantB: 0,
+		contestantA: {name: 'A', point: 0},
+		contestantB: {name: 'B', point: 0},
 	}
 	componentDidMount = async() => {
 		var response = await fetch('matches_data/' + this.state.id)
@@ -15,10 +15,16 @@ class Match extends Component {
 	render() {
 		return (
 			<div>
-				<div className='font-num fl-center fl-row'>
-					<h1 className='pd-0-20'>{this.state.contestantA}</h1>
-					<h1>:</h1>
-					<h1 className='pd-0-20'>{this.state.contestantB}</h1>
+				<div className='font-num fl-col align-center'>
+					<div className='fl-row'>
+						<h1 className='pd-0-20'>{this.state.contestantA.name}</h1>
+						<h1 className='pd-0-20'>{this.state.contestantB.name}</h1>
+					</div>
+					<div className='fl-row'>
+						<h1 className='pd-0-20'>{this.state.contestantA.point}</h1>
+						<h1>:</h1>
+						<h1 className='pd-0-20'>{this.state.contestantB.point}</h1>
+					</div>
 				</div>
 			</div>
 		)

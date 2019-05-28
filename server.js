@@ -9,8 +9,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 matches = [
-	{id: 0, contestantA: 10, contestantB: 20},
-	{id: 1, contestantA: 20, contestantB: 30}
+	{id: 0, contestantA: {name: 'A', point: 10}, contestantB: {name: 'B', point: 20}},
+	{id: 1, contestantA: {name: 'A', point: 20}, contestantB: {name: 'B', point: 20}},
 ]
 
 app.get('/', (req, res) => {

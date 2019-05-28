@@ -11,7 +11,7 @@ class Matches extends Component {
 		this.setState( () => ({ matches: matches }))
 	}
 	addMatch = async() => {
-		var data = {id: this.state.matches.length, contestantA: 0, contestantB: 0}
+		var data = {id: this.state.matches.length, contestantA: {name: 'A', point: 0}, contestantB: {name: 'B', point: 0}}
 		var response = await fetch('/add_match', {
 			method: 'POST',
 			headers: {
