@@ -13,30 +13,40 @@ contract Lottery is Ownable {
         address payable addr;
     }
 
+    modifier onlyOwnerOfGame (uint32 _gameId) {
+        require(game2Bets[_gameId][0].addr == msg.sender, "Only owner of game can payback");
+        _;
+    }
+
     /* Events */
-    event SuccessfullyBet(address indexed addr, uint32 gameId, uint64 betAmount, uint8 team);
+    event NewGameCreated(address indexed addr, uint32 gameIndex);
+    event SuccessfullyBet(address indexed addr, uint32 gameId, uint index, uint64 betAmount, uint8 team);
     event Transfer(address indexed addr, uint transferAmount);
 
     /* public functions */
-    function holdNewLot () public onlyOwner returns (uint32) {
+    function holdNewLot () public returns (uint32) {
         // first bet of each game is the information of the game
-        game2Bets[numGames].push(Bet(0,0,address(0)));
+        game2Bets[numGames].push(Bet(0,0,msg.sender));
+        emit NewGameCreated(msg.sender, numGames);
         numGames++;
-        return numGames;
+        return numGames - 1;
     }
 
     function bet (uint32 _gameId, uint64 _betAmount, uint8 _team) public payable returns (uint, uint) {
         uint fee = 0;
         require(_gameId < numGames, "Game ID out of range");
         require (msg.value >= _betAmount + fee, "Not enough paid value");
+        require(game2Bets[_gameId][0].betTeam == 0, "Game has already ended");
         game2Bets[_gameId].push(Bet(_betAmount, _team, msg.sender));
         addr2betCount[msg.sender]++;
-        emit SuccessfullyBet(msg.sender, _gameId, _betAmount, _team);
+        emit SuccessfullyBet(msg.sender, _gameId, game2Bets[_gameId].length - 1, _betAmount, _team);
         return (_gameId, game2Bets[_gameId].length - 1);
     }
 
-    function payback (uint32 _gameId, uint8 _team, uint64 _score1, uint64 _score2) public onlyOwner {
+    function payback (uint32 _gameId, uint8 _team, uint64 _score1, uint64 _score2) public onlyOwnerOfGame(_gameId) {
         require(_gameId < numGames, "Game ID out of range");
+        require(game2Bets[_gameId][0].betTeam != 0, "Can only payback once");
+        require(_team != 0, "Winning team not specified");
         // set winning team
         game2Bets[_gameId][0].betTeam = _team;
         game2Bets[_gameId][0].betAmount = _score1 << 128 + _score2;
@@ -79,6 +89,7 @@ contract Lottery is Ownable {
         }
         return (retAmount, retTeam);
 */
+        require(_index != 0, "Cannot retrieve info");
         Bet memory game_info = game2Bets[_gameId][0];
         Bet memory user_bet = game2Bets[_gameId][_index];
         require(msg.sender == user_bet.addr, "Cannot retrieve record: Permission denied");
@@ -92,7 +103,7 @@ contract Lottery is Ownable {
     function getTeamAmount (uint32 _gameId, uint8 _team) public view returns (uint) {
         Bet[] memory bets = game2Bets[_gameId];
         uint total = 0;
-        for (uint i = 0; i < bets.length; i++) {
+        for (uint i = 1; i < bets.length; i++) {
             if (bets[i].betTeam == _team){
                 total += bets[i].betAmount;
             }
