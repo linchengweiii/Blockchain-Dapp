@@ -21,6 +21,7 @@ contract Lottery is Ownable {
     /* Events */
     event NewGameCreated(address indexed addr, uint32 gameIndex);
     event SuccessfullyBet(address indexed addr, uint32 gameId, uint index, uint64 betAmount, uint8 team);
+    event ReturnChange(address indexed addr, uint change);
     event Transfer(address indexed addr, uint transferAmount);
 
     /* public functions */
@@ -40,6 +41,11 @@ contract Lottery is Ownable {
         game2Bets[_gameId].push(Bet(_betAmount, _team, msg.sender));
         addr2betCount[msg.sender]++;
         emit SuccessfullyBet(msg.sender, _gameId, game2Bets[_gameId].length - 1, _betAmount, _team);
+        if (msg.value > _betAmount + fee) {
+            uint change = msg.value - (_betAmount + fee);
+            msg.sender.transfer(change);
+            emit ReturnChange(msg.sender, change);
+        }
         return (_gameId, game2Bets[_gameId].length - 1);
     }
 

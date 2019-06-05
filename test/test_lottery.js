@@ -102,8 +102,8 @@ contract('Lottery', accounts => {
 contract('Lottery', accounts => {
     it('should pay users back correctly', () => {
         let lot
-        let betAmount1 = 0.5, betTeam1 = 1
-        let betAmount2 = 2.0, betTeam2 = 2
+        let betAmount1 = 0.5, paid1 = 1, betTeam1 = 1
+        let betAmount2 = 2.0, paid2 = 4, betTeam2 = 2
 
         let account1_starting_balance
         let account2_starting_balance 
@@ -116,8 +116,8 @@ contract('Lottery', accounts => {
             return lot.holdNewLot({from: accounts[0]})
         })
         .then(() => {
-            lot.bet(0, toWei(betAmount1), betTeam1, {from: accounts[1], value: toWei(betAmount1)});
-            lot.bet(0, toWei(betAmount2), betTeam2, {from: accounts[2], value: toWei(betAmount2)});
+            lot.bet(0, toWei(betAmount1), betTeam1, {from: accounts[1], value: toWei(paid1)});
+            lot.bet(0, toWei(betAmount2), betTeam2, {from: accounts[2], value: toWei(paid2)});
             // lot.payback(0, betTeam1, {from: accounts[0]})
             // checkBalance(accounts[1], 1.5)
             account1_starting_balance = getBalance(accounts[1])
