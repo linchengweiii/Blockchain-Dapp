@@ -21,28 +21,57 @@ contract('Lottery', accounts => {
         .then(() => {
             for (let i = 0; i < betNum; i++) {
                 // pass value to contract in Wei
-                lot.bet(0, toWei(betAmount[i]), i%2+1, { from: accounts[1], value: toWei(betAmount[i]) })
+                lot.bet((0), toWei(betAmount[i]), i%2+1, { from: accounts[1], value: toWei(betAmount[i]) })
             }
         })
         // test records
-        .then(() => lot.getRecords.call({ from: accounts[1] }))
+        .then(() => lot.getRecord.call(0, 1, { from: accounts[1] }) )
         .then( ret => {
-            let retAmount = ret[0]
-            let retTeam = ret[1]
-            for (let i = 0; i < betNum; i++) {
-                assert.equal(
-                    fromWei(retAmount[i]),
-                    betAmount[i],
-                    'Amount in record is not correct'
-                )
-                assert.equal(
-                    retTeam[i],
-                    i%2+1,
-                    'Team in record is not correct'
-                )
-            }
+            assert.equal(fromWei(ret[0]), betAmount[0], 'Amount in record is not correct')
+            assert.equal(ret[1], 1, 'Team in record is not correct')
+            assert.equal(ret[2], 0, 'Game result is not correct')
+            assert.equal(ret[3], 0, 'Winning team is not correct')
+            assert.equal(fromWei(ret[4]), betAmount.reduce((p, c, i) => i % 2 == 0? p + c: p, 0), "Team1 amount is not correct")
+            assert.equal(fromWei(ret[5]), betAmount.reduce((p, c, i) => i % 2 == 1? p + c: p, 0), "Team1 amount is not correct")
+        })
+        .then(() => lot.getRecord.call(0, 2, { from: accounts[1] }) )
+        .then( ret => {
+            assert.equal(fromWei(ret[0]), betAmount[1], 'Amount in record is not correct')
+            assert.equal(ret[1], 2, 'Team in record is not correct')
+            assert.equal(ret[2], 0, 'Game result is not correct')
+            assert.equal(ret[3], 0, 'Winning team is not correct')
+            assert.equal(fromWei(ret[4]), betAmount.reduce((p, c, i) => i % 2 == 0? p + c: p, 0), "Team1 amount is not correct")
+            assert.equal(fromWei(ret[5]), betAmount.reduce((p, c, i) => i % 2 == 1? p + c: p, 0), "Team1 amount is not correct")
+        })
+        .then(() => lot.getRecord.call(0, 3, { from: accounts[1] }) )
+        .then( ret => {
+            assert.equal(fromWei(ret[0]), betAmount[2], 'Amount in record is not correct')
+            assert.equal(ret[1], 1, 'Team in record is not correct')
+            assert.equal(ret[2], 0, 'Game result is not correct')
+            assert.equal(ret[3], 0, 'Winning team is not correct')
+            assert.equal(fromWei(ret[4]), betAmount.reduce((p, c, i) => i % 2 == 0? p + c: p, 0), "Team1 amount is not correct")
+            assert.equal(fromWei(ret[5]), betAmount.reduce((p, c, i) => i % 2 == 1? p + c: p, 0), "Team1 amount is not correct")
+        })
+        .then(() => lot.getRecord.call(0, 4, { from: accounts[1] }) )
+        .then( ret => {
+            assert.equal(fromWei(ret[0]), betAmount[3], 'Amount in record is not correct')
+            assert.equal(ret[1], 2, 'Team in record is not correct')
+            assert.equal(ret[2], 0, 'Game result is not correct')
+            assert.equal(ret[3], 0, 'Winning team is not correct')
+            assert.equal(fromWei(ret[4]), betAmount.reduce((p, c, i) => i % 2 == 0? p + c: p, 0), "Team1 amount is not correct")
+            assert.equal(fromWei(ret[5]), betAmount.reduce((p, c, i) => i % 2 == 1? p + c: p, 0), "Team1 amount is not correct")
+        })
+        .then(() => lot.getRecord.call(0, 5, { from: accounts[1] }) )
+        .then( ret => {
+            assert.equal(fromWei(ret[0]), betAmount[4], 'Amount in record is not correct')
+            assert.equal(ret[1], 1, 'Team in record is not correct')
+            assert.equal(ret[2], 0, 'Game result is not correct')
+            assert.equal(ret[3], 0, 'Winning team is not correct')
+            assert.equal(fromWei(ret[4]), betAmount.reduce((p, c, i) => i % 2 == 0? p + c: p, 0), "Team1 amount is not correct")
+            assert.equal(fromWei(ret[5]), betAmount.reduce((p, c, i) => i % 2 == 1? p + c: p, 0), "Team1 amount is not correct")
         })
     })
+
     it('should get correct betAmounts of teams (single game)', () => {
         // test total amount on team1
         return Lottery.deployed()
@@ -68,11 +97,13 @@ contract('Lottery', accounts => {
     })
 })
 
+
+
 contract('Lottery', accounts => {
     it('should pay users back correctly', () => {
         let lot
         let betAmount1 = 0.5, betTeam1 = 1
-        let betAmount2 = 1.0, betTeam2 = 2
+        let betAmount2 = 2.0, betTeam2 = 2
 
         let account1_starting_balance
         let account2_starting_balance 
@@ -87,7 +118,11 @@ contract('Lottery', accounts => {
         .then(() => {
             lot.bet(0, toWei(betAmount1), betTeam1, {from: accounts[1], value: toWei(betAmount1)});
             lot.bet(0, toWei(betAmount2), betTeam2, {from: accounts[2], value: toWei(betAmount2)});
-
+            // lot.payback(0, betTeam1, {from: accounts[0]})
+            // checkBalance(accounts[1], 1.5)
+            account1_starting_balance = getBalance(accounts[1])
+            account2_starting_balance = getBalance(accounts[2])
+            /*
             ( async () => {
                 account1_starting_balance = await getBalance(accounts[1])
                 account2_starting_balance = await getBalance(accounts[2])
@@ -109,62 +144,46 @@ contract('Lottery', accounts => {
                     account2_ending_balance - account2_starting_balance,
                     'Return of user2 is incorrect'
                 )
-            })();
+            })();*/
         })
-        // .then(() => lot.getRecords.call({ from: accounts[1] }))
-        // .then(ret => {
-        //     let retAmount = ret[0]
-        //     let retTeam = ret[1]
-
-        //     assert.equal(
-        //         fromWei(retAmount[0]),
-        //         betAmount1,
-        //         'Amount in record of user1 is not correct'
-        //     )
-        //     assert.equal(
-        //         retTeam,
-        //         betTeam1,
-        //         'Team in record of user1 is not correct'
-        //     )
-        // })
-        // .then(() => lot.getRecords.call({ from: accounts[2] }))
-        // .then(ret => {
-        //     let retAmount = ret[0]
-        //     let retTeam = ret[1]
-        //     assert.equal(
-        //         fromWei(retAmount[0]),
-        //         betAmount2,
-        //         'Amount in record of user2 is not correct'
-        //     )
-        //     assert.equal(
-        //         retTeam,
-        //         betTeam2,
-        //         'Team in record of user2 is not correct'                
-        //     )
-        // })
-        // .then(() => lot.payback(0, 1, {from: accounts[0]}))
-        // .then(() => {
-        //     // web3.eth.getBalance(accounts[1]).then(b => { 
-        //     //     console.log(fromWei(b))
-        //     //     account1_ending_balance = fromWei(b)
-        //     //     console.log(account1_ending_balance) 
-        //     // })
-        //     account1_ending_balance = getBalance(accounts[1])
-        //     console.log(account1_ending_balance)
-        //     account2_ending_balance = getBalance(accounts[2])
-        //     // account1_ending_balance.then(a => console.log(a))
-        //     // console.log(account2_ending_balance)
-        //     assert.equal(
-        //         1.5,
-        //         account1_ending_balance - account1_starting_balance,
-        //         'Return of user1 is incorrect'
-        //     )
-        //     assert.equal(
-        //         0,
-        //         account2_ending_balance - account2_starting_balance,
-        //         'Return of user2 is incorrect'
-        //     )
-        // })
+        .then(() => lot.getRecord.call(0, 1, { from: accounts[1] }))
+        .then( ret => {
+            assert.equal(fromWei(ret[0]), betAmount1, 'Amount in record is not correct')
+            assert.equal(ret[1], 1, 'Team in record is not correct')
+            assert.equal(ret[2], 0, 'Game result is not correct')
+            assert.equal(ret[3], 0, 'Winning team is not correct')
+        })
+        .then(() => lot.getRecord.call(0, 2, { from: accounts[2] }))
+        .then( ret => {
+            assert.equal(fromWei(ret[0]), betAmount2, 'Amount in record is not correct')
+            assert.equal(ret[1], 2, 'Team in record is not correct')
+            assert.equal(ret[2], 0, 'Game result is not correct')
+            assert.equal(ret[3], 0, 'Winning team is not correct')
+        })
+        .then(() => lot.payback(0, 1, 1, 0, {from: accounts[0]}))
+        .then(() => {
+            // web3.eth.getBalance(accounts[1]).then(b => { 
+            //     console.log(fromWei(b))
+            //     account1_ending_balance = fromWei(b)
+            //     console.log(account1_ending_balance) 
+            // })
+            account1_ending_balance = getBalance(accounts[1])
+            account2_ending_balance = getBalance(accounts[2])
+            // account1_ending_balance.then(a => console.log(a))
+            // console.log(account2_ending_balance)
+            console.log(account1_starting_balance)
+            while (typeof(account2_ending_balance) == Promise || typeof(account1_ending_balance) == Promise);
+            assert.equal(
+                1.5,
+                account1_ending_balance - account1_starting_balance,
+                'Return of user1 is incorrect'
+            )
+            assert.equal(
+                0,
+                account2_ending_balance - account2_starting_balance,
+                'Return of user2 is incorrect'
+            )
+        })
     })
 })
 
@@ -172,4 +191,20 @@ async function getBalance(addr) {
     let balance = await web3.eth.getBalance(addr)
     // console.log(balance)
     return balance
+}
+
+function checkBalance(addr, result) {
+    web3.eth.getBalance(addr)
+    .then(startBalance => {
+        lot.payback(0, betTeam, {from: accounts[0]})
+        web3.eth.getBalance(addr)
+        .then(endBalance => {
+            assert.equal(
+                endBalance - startBalance,
+                result,
+                'Account balance is not correct'
+            )
+            console.log('yes')
+        })
+    })
 }
