@@ -6,11 +6,23 @@ import Content from './Content'
 class App extends Component {
 	state = {
 		cur_page: 0,
+		isLoggedIn: false,
+		userId: '',
 		contents: [
 			{ url: '/'				, text: 'Home' },
 			{ url: '/matches'	, text: 'Matches' },
-			{ url: '/user'		, text: 'User' },
+			{ url: '/login'		, text: 'Login' },
 		]
+	}
+	login = userId => {
+		this.setState( () => ({ isLoggedIn: true }))
+		this.setState( (state) => {
+			var new_contents = state.contents
+			new_contents[new_contents.length-1] = { url: '/user', text: 'User' }
+			return { contents: new_contents }
+		})
+		this.props.history.push('/')
+		this.setState( () => ({ userId: userId }))
 	}
 	changePage = idx => {
 		this.setState( () => ({ cur_page: idx }))
@@ -22,7 +34,7 @@ class App extends Component {
 				<Header changePage={this.changePage}
 								cur_page={this.state.cur_page}
 								contents={this.state.contents} />
-				<Content />
+				<Content login={this.login}/>
 			</div>
 		)
 	}
