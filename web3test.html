@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>web3.js test</title>
+		<script language="javascript" type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+		<script language="javascript" type="text/javascript" src="web3.min.js"></script>
+		<script language="javascript" type="text/javascript" src="lotteryAbi.js"></script>
+	</head>
+	<body>
+		<h1>Lottery Test</h1>
+		<button onclick="holdNewLot()">Hold New Lottery</button>
+		<button onclick="bet(0,1,1)">Bet on game 0 1 Ether on team 1</button>
+		<h3>Current Game Number</h3>
+		<p id="gameNum">0</p>
+		<script>
+			var lotteryContract;
+			var userAccount;
+			window.addEventListener('load', function(){
+				if (typeof web3 !== 'undefined'){
+					web3js = new Web3(web3.currentProvider);
+					web3js.currentProvider.enable()
+					web3js.eth.getAccounts()
+					.then((acc)=>{
+						console.log(acc);
+						userAccount = acc[0];
+						startApp()
+					})
+				}
+				else {
+					window.alert("Please install Metamask first!")
+				}
+			})
+
+			async function holdNewLot() {
+				const transaction = await lotteryContract.methods.holdNewLot().send({from: userAccount})
+				// await console.log(transaction)
+			}
+
+			async function bet(gameId, betAmount, team) {
+				const betWei = web3js.utils.toWei(betAmount.toString(), 'ether')
+				const transaction = await lotteryContract.methods.bet(gameId, betWei, team).send({from: userAccount, value: betWei})
+			}
+
+			function startApp() {
+				if (userAccount === undefined) window.alert("Please log in your metamask account!")
+				var updateAccount = setInterval(function(){
+					web3js.eth.getAccounts()
+					.then((acc)=>{
+						userAccount = acc[0];
+					})
+				}, 200)
+				var lotteryAddress = "0x32057450Bf8ba9708D1cC00d4202aA348c4A7fc6";
+				lotteryContract = new web3js.eth.Contract(lotteryAbi, lotteryAddress);
+				console.log(lotteryContract)
+				lotteryContract.events.NewGameCreated()
+				.on("data", function(event) {
+					let id = event.returnValues.gameIndex;
+					console.log(id)
+					document.getElementById("gameNum").innerHTML = id.toString();
+				})
+				lotteryContract.events.SuccessfullyBet()
+				.on("data", function(event) {
+					let index = event.returnValues.index;
+					console.log(index.toString()+"-th bet");
+				})
+			}
+			
+			
+			
+			
+		</script>
+	</body>
+</html>
