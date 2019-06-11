@@ -19,16 +19,16 @@ contract Lottery is Ownable {
     }
 
     /* Events */
-    event NewGameCreated(address indexed addr, uint32 gameIndex);
+    event NewGameCreated(address indexed addr, uint32 matchId, uint32 gameIndex);
     event SuccessfullyBet(address indexed addr, uint32 gameId, uint index, uint64 betAmount, uint8 team);
     event ReturnChange(address indexed addr, uint change);
     event Transfer(address indexed addr, uint transferAmount);
 
     /* public functions */
-    function holdNewLot () public returns (uint32) {
+    function holdNewLot (uint32 matchId) public returns (uint32) {
         // first bet of each game is the information of the game
         game2Bets[numGames].push(Bet(0,0,msg.sender));
-        emit NewGameCreated(msg.sender, numGames);
+        emit NewGameCreated(msg.sender, matchId, numGames);
         numGames++;
         return numGames - 1;
     }

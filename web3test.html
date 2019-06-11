@@ -15,9 +15,11 @@
 		<input id="betGameId" placeholder="game id"/>
 		<button id="payback1">Payback 1</button>
 		<button id="payback2">Payback 2</button>
-		<input id="winTeam" placeholder="win team"/>
+		<input id="winTeam" placeholder="game id"/>
 		<h3>Current Game Number</h3>
 		<p id="gameNum">0</p>
+		<button id="showGameInfo">show game info</button>
+		<input id="infoGameId" placeholder="game id">
 		<script>
 			var lotteryContract;
 			var userAccount;
@@ -110,6 +112,14 @@
 				}
 				document.getElementById("payback2").onclick = function(){
 					payback(document.getElementById("winTeam").value, 2, 0, 0)
+				}
+				document.getElementById("showGameInfo").onclick = function(event){
+					let id = document.getElementById("infoGameId").value;
+					let info = getGameInfo(id)
+					.then((info)=>{
+						console.log(info);
+					})
+					
 				}
 			}
 			
