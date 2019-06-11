@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom'
 import Home from './contents/Home'
 import Matches from './contents/Matches'
 import User from './contents/User'
+import Login from './contents/Login'
 import Match from './contents/Match'
 
 class Content extends Component {
@@ -15,6 +16,7 @@ class Content extends Component {
 					<Route exact path='/matches' render={() => <Matches />} />
 					<Route path='/matches/:matchId' render={() => <Match />} />
 					<Route path='/user' render={() => <User />} />
+					<Route path='/login' render={() => <Login login={this.props.login}/>} />
 				</Switch>
 			</div>
 		)

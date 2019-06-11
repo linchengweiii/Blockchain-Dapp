@@ -21,6 +21,7 @@ contract Lottery is Ownable {
     /* Events */
     event NewGameCreated(address indexed addr, uint32 gameIndex);
     event SuccessfullyBet(address indexed addr, uint32 gameId, uint index, uint64 betAmount, uint8 team);
+    event ReturnChange(address indexed addr, uint change);
     event Transfer(address indexed addr, uint transferAmount);
 
     /* public functions */
@@ -40,12 +41,17 @@ contract Lottery is Ownable {
         game2Bets[_gameId].push(Bet(_betAmount, _team, msg.sender));
         addr2betCount[msg.sender]++;
         emit SuccessfullyBet(msg.sender, _gameId, game2Bets[_gameId].length - 1, _betAmount, _team);
+        if (msg.value > _betAmount + fee) {
+            uint change = msg.value - (_betAmount + fee);
+            msg.sender.transfer(change);
+            emit ReturnChange(msg.sender, change);
+        }
         return (_gameId, game2Bets[_gameId].length - 1);
     }
 
     function payback (uint32 _gameId, uint8 _team, uint64 _score1, uint64 _score2) public onlyOwnerOfGame(_gameId) {
         require(_gameId < numGames, "Game ID out of range");
-        require(game2Bets[_gameId][0].betTeam != 0, "Can only payback once");
+        require(game2Bets[_gameId][0].betTeam == 0, "Can only payback once");
         require(_team != 0, "Winning team not specified");
         // set winning team
         game2Bets[_gameId][0].betTeam = _team;
@@ -72,7 +78,7 @@ contract Lottery is Ownable {
         return total / betAmount;
     }
 
-    function getRecord (uint32 _gameId, uint _index) public view returns (uint, uint, uint, uint) {
+    function getRecord (uint32 _gameId, uint _index) public view returns (uint, uint, uint, uint, uint, uint) {
 /*
         uint[] memory retAmount = new uint[](addr2betCount[msg.sender]);
         uint[] memory retTeam = new uint[](addr2betCount[msg.sender]);
@@ -93,7 +99,8 @@ contract Lottery is Ownable {
         Bet memory game_info = game2Bets[_gameId][0];
         Bet memory user_bet = game2Bets[_gameId][_index];
         require(msg.sender == user_bet.addr, "Cannot retrieve record: Permission denied");
-        return (user_bet.betAmount, user_bet.betTeam, game_info.betAmount, game_info.betTeam);
+        return (user_bet.betAmount, user_bet.betTeam, game_info.betAmount, game_info.betTeam,
+                getTeamAmount(_gameId, 1), getTeamAmount(_gameId, 2));
     }
 
     function getTotalAmount (uint32 _gameId) public view returns (uint) {
