@@ -76,5 +76,17 @@ app.get('/scores', async(req, res) => {
 	var scores = await response.json()
 	res.json(scores)
 })
+app.get('/result', async(req, res) => {
+	var response = await fetch('http://localhost:3001/result?id='+req.query.id)
+	var result = await response.json()
+	res.json(result)
+})
+app.get('/status', async(req, res) => {
+	var response = await fetch('http://localhost:3001/status?id='+req.query.id)
+	var status = await response.json()
+	res.json(status)
+})
+
+
 
 server = app.listen(port , () => console.log('Listening on port ' + port))

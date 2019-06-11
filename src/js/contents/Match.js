@@ -19,9 +19,19 @@ class Match extends Component {
 		this.setState( () => (data))
 
 		this.refreshData = setInterval( async() => {
-			response = await fetch('/scores?id=' + this.state.id)
-			var scores = await response.json()
-			this.setState( () => ({ scores: scores }))
+			response = await fetch('/status?id=' + this.state.id)
+			var status = await response.json()
+			if (status === 'Ongoing'){
+				response = await fetch('/scores?id=' + this.state.id)
+				var scores = await response.json()
+				this.setState( () => ({ scores: scores }))
+			}else if (status === 'End') {
+				response = await fetch('/result?id=' + this.state.id)
+				var result = await response.json()
+				this.setState( () => ({ result: result }))
+				Contract.payback(this.state.id, this.state.result+1, this.state.scores[0], this.state.scores[1])
+				clearInterval(this.refreshData)
+			}
 		}, 1000)
 	}
 	componentWillUnmount = () => {
