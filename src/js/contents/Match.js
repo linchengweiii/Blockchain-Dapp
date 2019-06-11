@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router'
+import * as Contract from '../api'
 
 class Match extends Component {
 	state = {
@@ -26,6 +27,9 @@ class Match extends Component {
 	componentWillUnmount = () => {
 		clearInterval(this.refreshData)
 	}
+	bet = teamId => {
+		Contract.bet(this.state.id, this.betAmount.value, teamId+1)
+	}
 	render() {
 		return (
 			<div>
@@ -41,6 +45,15 @@ class Match extends Component {
 						<h1 className='pd-0-20'>{this.state.scores[0]}</h1>
 						<h1>:</h1>
 						<h1 className='pd-0-20'>{this.state.scores[1]}</h1>
+					</div>
+					<div className='fl-col'>
+						<div className='fl-row'>
+							<input type='text' placeholder='BetAmount' ref={el=>this.betAmount=el} />
+						</div>
+						<div className='fl-row'>
+							<button className='pd-0-20' onClick={()=>this.bet(0)}>{'bet '+this.state.teams[0]}</button>
+							<button className='pd-0-20' onClick={()=>this.bet(1)}>{'bet '+this.state.teams[1]}</button>
+						</div>
 					</div>
 				</div>
 			</div>
