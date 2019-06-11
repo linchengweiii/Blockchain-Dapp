@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import Header from './Header'
 import Content from './Content'
+import * as Contract from './api'
+
+let web3js = window.web3js;
 
 class App extends Component {
 	state = {
@@ -13,6 +16,11 @@ class App extends Component {
 			{ url: '/matches'	, text: 'Matches' },
 			{ url: '/login'		, text: 'Login' },
 		]
+	}
+	componentDidMount(){
+		Contract.load();
+		console.log("lotteryContract");
+		console.log(Contract.lotteryContract);
 	}
 	login = userId => {
 		this.setState( () => ({ isLoggedIn: true }))
