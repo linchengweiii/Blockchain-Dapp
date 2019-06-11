@@ -33,6 +33,7 @@ contract Lottery is Ownable {
         return numGames - 1;
     }
 
+    // Bet `amount` on `team` in game `gameId`
     function bet (uint32 _gameId, uint64 _betAmount, uint8 _team) public payable returns (uint, uint) {
         uint fee = 0;
         require(_gameId < numGames, "Game ID out of range");
@@ -49,7 +50,10 @@ contract Lottery is Ownable {
         return (_gameId, game2Bets[_gameId].length - 1);
     }
 
-    function payback (uint32 _gameId, uint8 _team, uint64 _score1, uint64 _score2) public onlyOwnerOfGame(_gameId) {
+    // Only used when a game is finished.
+    // Given gameId, winning team, scores of both teams
+    // contract will payback the people who wins the bet
+    function payback (uint32 _gameId, uint8 _team, uint64 _score1, uint64 _score2) public {
         require(_gameId < numGames, "Game ID out of range");
         require(game2Bets[_gameId][0].betTeam == 0, "Can only payback once");
         require(_team != 0, "Winning team not specified");
@@ -72,41 +76,37 @@ contract Lottery is Ownable {
         }
     }
 
-    function getOdd (uint32 _gameId, uint8 _team) public view returns (uint) {
-        uint total = getTotalAmount(_gameId);
-        uint betAmount = getTeamAmount(_gameId, _team);
-        return total / betAmount;
-    }
+    // Not used due to integer division
+    // function getOdd (uint32 _gameId, uint8 _team) public view returns (uint) {
+    //     uint total = getTotalAmount(_gameId);
+    //     uint betAmount = getTeamAmount(_gameId, _team);
+    //     return total / betAmount;
+    // }
 
-    function getRecord (uint32 _gameId, uint _index) public view returns (uint, uint, uint, uint, uint, uint) {
-/*
-        uint[] memory retAmount = new uint[](addr2betCount[msg.sender]);
-        uint[] memory retTeam = new uint[](addr2betCount[msg.sender]);
-        uint index = 0;
-        for (uint32 i = 0; i < numGames; i++) {
-            for (uint j = 0; j < game2Bets[i].length; j++) {
-                Bet memory b = game2Bets[i][j];
-                if (b.addr == msg.sender) {
-                    retAmount[index] = b.betAmount;
-                    retTeam[index] = b.betTeam;
-                    index++;
-                }
-            }
-        }
-        return (retAmount, retTeam);
-*/
+    // Get bet record by giving `gameId` and `index` of the bet in that game
+    function getRecord (uint32 _gameId, uint _index) public view returns (uint, uint) {
+        require(_gameId < numGames, "Game ID out of range");
         require(_index != 0, "Cannot retrieve info");
-        Bet memory game_info = game2Bets[_gameId][0];
         Bet memory user_bet = game2Bets[_gameId][_index];
         require(msg.sender == user_bet.addr, "Cannot retrieve record: Permission denied");
-        return (user_bet.betAmount, user_bet.betTeam, game_info.betAmount, game_info.betTeam,
-                getTeamAmount(_gameId, 1), getTeamAmount(_gameId, 2));
+        return (user_bet.betAmount, user_bet.betTeam);
     }
 
+    // Get game info of game `gameId`
+    function getGameInfo (uint32 _gameId) public view returns (address, uint, uint, uint, uint, uint) {
+        require(_gameId < numGames, "Game ID out of range");
+        Bet memory game_info = game2Bets[_gameId][0];
+        uint score1 = game_info.betAmount >> 128;
+        uint score2 = game_info.betAmount % (1 << 128);
+        return (game_info.addr, game_info.betTeam, score1, score2, getTeamAmount(_gameId, 1), getTeamAmount(_gameId, 2));
+    }
+
+    // Get total bet amount of game `gameId`
     function getTotalAmount (uint32 _gameId) public view returns (uint) {
         return getTeamAmount(_gameId, 1) + getTeamAmount(_gameId, 2);
     }
 
+    // Get bet amount on `team` of game `gameId`
     function getTeamAmount (uint32 _gameId, uint8 _team) public view returns (uint) {
         Bet[] memory bets = game2Bets[_gameId];
         uint total = 0;
@@ -118,5 +118,4 @@ contract Lottery is Ownable {
         return total;
     }
 
-    /* private functions */
 }
