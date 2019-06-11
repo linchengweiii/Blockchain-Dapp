@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "mini-css-extract-plugin": "^0.6.0",
+    "node-fetch": "^2.6.0",
     "nodemon": "^1.19.1",
     "npm": "^6.9.0",
     "react": "^16.8.6",

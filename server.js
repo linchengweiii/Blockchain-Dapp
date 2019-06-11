@@ -1,5 +1,6 @@
 var express = require('express')
 var path = require('path')
+var fetch = require('node-fetch')
 var app = express()
 var bodyParser = require('body-parser')
 var port = process.env.PORT || 3000
@@ -7,11 +8,6 @@ var port = process.env.PORT || 3000
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-
-matches = [
-	{id: 0, contestantA: {name: 'A', point: 10}, contestantB: {name: 'B', point: 20}},
-	{id: 1, contestantA: {name: 'A', point: 20}, contestantB: {name: 'B', point: 20}},
-]
 
 isEmpty = obj => {
 	for ( var key in obj ) {
@@ -65,17 +61,20 @@ app.get('/login', (req, res) => {
 	}
 })
 
-app.get('/matches_data/:matchId', (req, res) => {
-	match_data = matches[req.params.matchId]
+app.get('/matches_data/:matchId', async(req, res) => {
+	var response = await fetch('http://localhost:3001/game_data/'+req.params.matchId)
+	var match_data = await response.json()
 	res.json(match_data)
 })
-app.get('/matches_data', (req, res) => {
-	res.json(matches)
+app.get('/matches_data', async (req, res) => {
+	var response = await fetch('http://localhost:3001/games_data')
+	var games = await response.json()
+	res.json(games)
 })
-app.post('/add_match', (req, res) => {
-	matches.push(req.body)
-	res.json('success')
+app.get('/scores', async(req, res) => {
+	var response = await fetch('http://localhost:3001/score?id='+req.query.id)
+	var scores = await response.json()
+	res.json(scores)
 })
-
 
 server = app.listen(port , () => console.log('Listening on port ' + port))
