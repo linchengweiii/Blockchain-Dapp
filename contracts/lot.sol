@@ -85,6 +85,7 @@ contract Lottery is Ownable {
 
     // Get bet record by giving `gameId` and `index` of the bet in that game
     function getRecord (uint32 _gameId, uint _index) public view returns (uint, uint) {
+        require(_gameId < numGames, "Game ID out of range");
         require(_index != 0, "Cannot retrieve info");
         Bet memory user_bet = game2Bets[_gameId][_index];
         require(msg.sender == user_bet.addr, "Cannot retrieve record: Permission denied");
@@ -93,6 +94,7 @@ contract Lottery is Ownable {
 
     // Get game info of game `gameId`
     function getGameInfo (uint32 _gameId) public view returns (address, uint, uint, uint, uint, uint) {
+        require(_gameId < numGames, "Game ID out of range");
         Bet memory game_info = game2Bets[_gameId][0];
         uint score1 = game_info.betAmount >> 128;
         uint score2 = game_info.betAmount % (1 << 128);
