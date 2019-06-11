@@ -82,9 +82,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.5.0;\r\n\r\n/**\r\n * @dev Contract module which provides a basic access control mechanism, where\r\n * there is an account (an owner) that can be granted exclusive access to\r\n * specific functions.\r\n *\r\n * This module is used through inheritance. It will make available the modifier\r\n * `onlyOwner`, which can be aplied to your functions to restrict their use to\r\n * the owner.\r\n */\r\ncontract Ownable {\r\n    address private _owner;\r\n\r\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\r\n\r\n    /**\r\n     * @dev Initializes the contract setting the deployer as the initial owner.\r\n     */\r\n    constructor () internal {\r\n        _owner = msg.sender;\r\n        emit OwnershipTransferred(address(0), _owner);\r\n    }\r\n\r\n    /**\r\n     * @dev Returns the address of the current owner.\r\n     */\r\n    function owner() public view returns (address) {\r\n        return _owner;\r\n    }\r\n\r\n    /**\r\n     * @dev Throws if called by any account other than the owner.\r\n     */\r\n    modifier onlyOwner() {\r\n        require(isOwner(), \"Ownable: caller is not the owner\");\r\n        _;\r\n    }\r\n\r\n    /**\r\n     * @dev Returns true if the caller is the current owner.\r\n     */\r\n    function isOwner() public view returns (bool) {\r\n        return msg.sender == _owner;\r\n    }\r\n\r\n    /**\r\n     * @dev Leaves the contract without owner. It will not be possible to call\r\n     * `onlyOwner` functions anymore. Can only be called by the current owner.\r\n     *\r\n     * > Note: Renouncing ownership will leave the contract without an owner,\r\n     * thereby removing any functionality that is only available to the owner.\r\n     */\r\n    function renounceOwnership() public onlyOwner {\r\n        emit OwnershipTransferred(_owner, address(0));\r\n        _owner = address(0);\r\n    }\r\n\r\n    /**\r\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\r\n     * Can only be called by the current owner.\r\n     */\r\n    function transferOwnership(address newOwner) public onlyOwner {\r\n        _transferOwnership(newOwner);\r\n    }\r\n\r\n    /**\r\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\r\n     */\r\n    function _transferOwnership(address newOwner) internal {\r\n        require(newOwner != address(0), \"Ownable: new owner is the zero address\");\r\n        emit OwnershipTransferred(_owner, newOwner);\r\n        _owner = newOwner;\r\n    }\r\n}",
-  "sourcePath": "C:\\Users\\andyh0913\\Blockchain-Dapp\\contracts\\Ownable.sol",
+  "sourcePath": "/mnt/c/Users/andyh0913/Blockchain-Dapp/contracts/Ownable.sol",
   "ast": {
-    "absolutePath": "/C/Users/andyh0913/Blockchain-Dapp/contracts/Ownable.sol",
+    "absolutePath": "/mnt/c/Users/andyh0913/Blockchain-Dapp/contracts/Ownable.sol",
     "exportedSymbols": {
       "Ownable": [
         167
@@ -252,7 +252,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 658,
+                        "referencedDeclaration": 709,
                         "src": "686:3:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -578,10 +578,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        661,
-                        662
+                        712,
+                        713
                       ],
-                      "referencedDeclaration": 662,
+                      "referencedDeclaration": 713,
                       "src": "1045:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -652,7 +652,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 658,
+                        "referencedDeclaration": 709,
                         "src": "1271:3:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -1276,10 +1276,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        661,
-                        662
+                        712,
+                        713
                       ],
-                      "referencedDeclaration": 662,
+                      "referencedDeclaration": 713,
                       "src": "2228:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -1484,7 +1484,7 @@
     "src": "0:2394:1"
   },
   "legacyAST": {
-    "absolutePath": "/C/Users/andyh0913/Blockchain-Dapp/contracts/Ownable.sol",
+    "absolutePath": "/mnt/c/Users/andyh0913/Blockchain-Dapp/contracts/Ownable.sol",
     "exportedSymbols": {
       "Ownable": [
         167
@@ -1652,7 +1652,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 658,
+                        "referencedDeclaration": 709,
                         "src": "686:3:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -1978,10 +1978,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        661,
-                        662
+                        712,
+                        713
                       ],
-                      "referencedDeclaration": 662,
+                      "referencedDeclaration": 713,
                       "src": "1045:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -2052,7 +2052,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 658,
+                        "referencedDeclaration": 709,
                         "src": "1271:3:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -2676,10 +2676,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        661,
-                        662
+                        712,
+                        713
                       ],
-                      "referencedDeclaration": 662,
+                      "referencedDeclaration": 713,
                       "src": "2228:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -2889,7 +2889,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-06-01T09:43:26.378Z",
+  "updatedAt": "2019-06-11T07:45:04.684Z",
   "devdoc": {
     "details": "Contract module which provides a basic access control mechanism, where\r there is an account (an owner) that can be granted exclusive access to\r specific functions.\r  * This module is used through inheritance. It will make available the modifier\r `onlyOwner`, which can be aplied to your functions to restrict their use to\r the owner.\r",
     "methods": {

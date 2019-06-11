@@ -10,7 +10,12 @@
 	<body>
 		<h1>Lottery Test</h1>
 		<button onclick="holdNewLot()">Hold New Lottery</button>
-		<button onclick="bet(0,1,1)">Bet on game 0 1 Ether on team 1</button>
+		<button id="bet1">Bet 1</button>
+		<button id="bet2">Bet 2</button>
+		<input id="betGameId" placeholder="game id"/>
+		<button id="payback1">Payback 1</button>
+		<button id="payback2">Payback 2</button>
+		<input id="winTeam" placeholder="win team"/>
 		<h3>Current Game Number</h3>
 		<p id="gameNum">0</p>
 		<script>
@@ -42,6 +47,26 @@
 				const transaction = await lotteryContract.methods.bet(gameId, betWei, team).send({from: userAccount, value: betWei})
 			}
 
+			async function payback(gameId, team, score1, score2){
+				const transaction = await lotteryContract.methods.payback(gameId, team, score1, score2).send({from: userAccount});
+			}
+
+			async function getRecord(gameId, index) {
+				return await lotteryContract.methods.getRecord(gameId, team).call();
+			}
+
+			async function getGameInfo(gameId) {
+				return await lotteryContract.methods.getGameInfo(gameId).call();
+			}
+
+			async function getTotalAmount (gameId) {
+				return await lotteryContract.methods.getTotalAmount(gameId).call();
+			}
+
+			async function getTeamAmount (gameId, team) {
+				return await lotteryContract.methods.getTeamAmount(gameId).call();
+			}
+
 			function startApp() {
 				if (userAccount === undefined) window.alert("Please log in your metamask account!")
 				var updateAccount = setInterval(function(){
@@ -50,7 +75,7 @@
 						userAccount = acc[0];
 					})
 				}, 200)
-				var lotteryAddress = "0x32057450Bf8ba9708D1cC00d4202aA348c4A7fc6";
+				var lotteryAddress = "0xc102aB400C3bfa6C126B31917337E50B49E513b3";
 				lotteryContract = new web3js.eth.Contract(lotteryAbi, lotteryAddress);
 				console.log(lotteryContract)
 				lotteryContract.events.NewGameCreated()
@@ -64,6 +89,28 @@
 					let index = event.returnValues.index;
 					console.log(index.toString()+"-th bet");
 				})
+				lotteryContract.events.Transfer()
+				.on("data", function(event){
+					let transferAmount = event.returnValues.transferAmount;
+					console.log("Receive " + transferAmount.toString());
+				})
+
+				document.getElementById("bet1").onclick = function(){
+					let value = document.getElementById("betGameId").value
+					console.log(value)
+					bet(value, 10, 1)
+				}
+				document.getElementById("bet2").onclick = function(){
+					let value = document.getElementById("betGameId").value
+					console.log(value)
+					bet(value, 10, 2)
+				}
+				document.getElementById("payback1").onclick = function(){
+					payback(document.getElementById("winTeam").value, 1, 0, 0)
+				}
+				document.getElementById("payback2").onclick = function(){
+					payback(document.getElementById("winTeam").value, 2, 0, 0)
+				}
 			}
 			
 			
