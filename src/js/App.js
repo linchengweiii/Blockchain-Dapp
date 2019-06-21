@@ -12,9 +12,12 @@ class App extends Component {
 		isLoggedIn: false,
 		userId: '',
 		contents: [
-			{ url: '/'				, text: 'Home' },
-			{ url: '/matches'	, text: 'Matches' },
-			{ url: '/login'		, text: 'Login' },
+			{ url: '/'										, text: 'Home' },
+			{ url: '/holdable_matches'		, text: 'Holdable Matches' },
+			{ url: '/bettable_games'			, text: 'Bettable Games' },
+			{ url: '/ongoing_games'				, text: 'Ongoing Games' },
+			{ url: '/ended_games'					, text: 'Ended Games' },
+			{ url: '/login'								, text: 'Login' },
 		]
 	}
 	componentDidMount(){

@@ -7,6 +7,8 @@ $dark-grey: hsl(0, 0%, 20%);
 $washed-gold: hsl(40, 100%, 90%);
 $washed-blue: hsl(230, 100%, 95%);
 $hv-washed-blue: hsl(230, 100%, 90%);
+$grey: hsl(0, 0%, 30%);
+$hv-light-grey: hsl(0, 0%, 80%);
 
 .bg-dark-red { background-color: $dark-red; }
 .bg-dark-grey { background-color: $dark-grey; }
@@ -16,7 +18,7 @@ $hv-washed-blue: hsl(230, 100%, 90%);
 
 .red { color: $red; }
 .dark-red { color: $dark-red; }
-.grey { color: hsl(0, 0%, 30%); }
+.grey { color: $grey; }
 .dark-grey { color: $dark-grey; }
 .gold { color: $gold; }
 .blue { color: $blue; }
@@ -24,3 +26,4 @@ $hv-washed-blue: hsl(230, 100%, 90%);
 
 .hv-gold:hover { color: $gold; }
 .hv-bg-washed-blue:hover { background-color: $hv-washed-blue; }
+.hv-bg-light-grey:hover { background-color: $hv-light-grey; }

@@ -36,7 +36,16 @@ getUserId = (account) => {
 app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
-app.get('/matches', (req, res) => {
+app.get('/holdable_matches', (req, res) => {
+	res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
+app.get('/bettable_games', (req, res) => {
+	res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
+app.get('/ongoing_games', (req, res) => {
+	res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
+app.get('/ended_games', (req, res) => {
 	res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 app.get('/matches/:matchId', (req, res) => {
@@ -62,12 +71,12 @@ app.get('/login', (req, res) => {
 })
 
 app.get('/matches_data/:matchId', async(req, res) => {
-	var response = await fetch('http://localhost:3001/game_data/'+req.params.matchId)
+	var response = await fetch('http://localhost:3001/match_data/'+req.params.matchId)
 	var match_data = await response.json()
 	res.json(match_data)
 })
 app.get('/matches_data', async (req, res) => {
-	var response = await fetch('http://localhost:3001/games_data')
+	var response = await fetch('http://localhost:3001/matches_data')
 	var games = await response.json()
 	res.json(games)
 })
