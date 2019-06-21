@@ -1,8 +1,10 @@
 var express = require('express')
 var path = require('path')
+var fs = require('fs')
 var app = express()
 var bodyParser = require('body-parser')
 var port = process.env.PORT || 3001
+const DIR_PATH = './db'
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.json())
@@ -51,6 +53,7 @@ app.get("/type", (req,res)=>{
 })
 
 server = app.listen(port , () => console.log('Server listening on port ' + port))
+init()
 
 var CLI = require('clui'),
 	clc = require("cli-color");
@@ -156,20 +159,46 @@ stdin.on('data', function(key) {
 })
 // displayGames = [];
 
-for (var i = 0;i<5;i++){
-	games.push(
-		{
-			id: i,
-			type: 'LoL',
-			teams: ['IG', 'TPA'],
-			scores: [0, 0],
-			start: new Date().getTime(),
-			end: 0, // 0 for unended
-			result: -1, // -1 for unended, 0 or 1 for the winning team
-			status: 'Ongoing'  // Ready, Ongoing, End
-		}
-	)
+function init(dir_path=DIR_PATH){
+	try {
+		fs.readFile(path.join(dir_path, 'data.json'), (err, data) => {  
+			if (err){
+				console.log("data.json not found, new data.json created!");
+				games = init_games();
+				fs.writeFile(path.join(dir_path, 'data.json'), JSON.stringify(games), (err) => {
+					if (err) return console.log(err);
+				});
+			}
+			else{
+				console.log("Found data.json!")
+				games = JSON.parse(data);
+			}	
+		});
+	}
+	catch(err) {
+		
+	}
 }
+
+function init_games(){
+	let new_games = [];
+	for (var i = 0;i<5;i++){
+		new_games.push(
+			{
+				id: i,
+				type: 'LoL',
+				teams: ['IG', 'TPA'],
+				scores: [0, 0],
+				start: new Date().getTime(),
+				end: 0, // 0 for unended
+				result: -1, // -1 for unended, 0 or 1 for the winning team
+				status: 'Ongoing'  // Ready, Ongoing, End
+			}
+		)
+	}
+	return new_games;
+}
+	
 
 function ms2ds(ms){
 	return (new Date(ms)).toLocaleString();
@@ -242,4 +271,7 @@ setInterval(() => {
 		}
 		return game
 	})
+	fs.writeFile(path.join(DIR_PATH, 'data.json'), JSON.stringify(games), (err) => {
+		if (err) return console.log(err);
+	});
 }, 1000);
