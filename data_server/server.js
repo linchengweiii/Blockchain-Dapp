@@ -64,7 +64,7 @@ var Line = CLI.Line,
 var stdin = process.stdin;
 var cmdBuf = '';
 var statusBuf = '';
-var currentId = 5;
+var currentId = 0;
 var matches = [];
 
 stdin.setRawMode(true);
@@ -96,12 +96,13 @@ stdin.on('data', function(key) {
 					id: currentId,
 					type: arr[1],
 					teams: [arr[2], arr[3]],
+					scores: [0, 0],
 					start: (new Date(timeString)).getTime(),
 					end: 0, // 0 for unended
 					result: -1, // -1 for unended, 0 or 1 for the winning team
 					status: 'Ready'  // ready, ongoing, end
 				}
-				matchess.push(newMatch);
+				matches.push(newMatch);
 				statusBuf = "Match ID " + currentId.toString() + " is added!";
 				currentId++;
 			}
@@ -159,25 +160,52 @@ stdin.on('data', function(key) {
 })
 // displaymatchs = [];
 
+
 function init(dir_path=DIR_PATH){
-	try {
-		fs.readFile(path.join(dir_path, 'data.json'), (err, data) => {  
-			if (err){
-				console.log("data.json not found, new data.json created!");
-				macthes = init_matches();
-				fs.writeFile(path.join(dir_path, 'data.json'), JSON.stringify(matches), (err) => {
-					if (err) return console.log(err);
-				});
-			}
-			else{
-				console.log("Found data.json!")
-				matches = JSON.parse(data);
-			}	
-		});
-	}
-	catch(err) {
-		
-	}
+	fs.readFile(path.join(dir_path, 'data.json'), (err, jsondata) => {  
+		if (err){
+			console.log("data.json not found, new data.json created!");
+			init_matches();
+			// macthes = init_matches();
+			// console.log(matches);
+			currentId = matches.length;
+			let new_data = {currentId: matches.length, matches: matches};
+			// console.log(new_data);
+			// console.log(JSON.stringify(new_data));
+			fs.writeFile(path.join(dir_path, 'data.json'), JSON.stringify(new_data), (err) => {
+				if (err) return console.log(err);
+			});
+		}
+		else{
+			console.log("Found data.json!");
+			data = JSON.parse(jsondata);
+			matches = data.matches;
+			currentId = data.currentId;
+		}	
+		setInterval(() => {
+			// console.log("set Interval");
+			// console.log(currentId);
+			currentMs = (new Date()).getTime();
+			matches = matches.map(match => {
+				if (currentMs >= match.start && match.end === 0){
+					// console.log("change to ongoing");
+					match.status = 'Ongoing';
+				}
+				if (match.status === 'Ongoing'){
+					if (Math.random()>0.9) match.scores[0] += 1;
+					if (Math.random()>0.9) match.scores[1] += 1
+					
+				}
+				return match
+			})
+			let new_data = {currentId: currentId, matches: matches};
+					// console.log(new_data);
+					// console.log(JSON.stringify(new_data));
+					fs.writeFile(path.join(DIR_PATH, 'data.json'), JSON.stringify(new_data), (err) => {
+						if (err) return console.log(err);
+					});
+		}, 1000);
+	});
 }
 
 function init_matches(){
@@ -196,6 +224,7 @@ function init_matches(){
 			}
 		)
 	}
+	matches = new_matches;
 	return new_matches;
 }
 	
@@ -256,22 +285,4 @@ setInterval(() => {
     outputBuffer.output();
 }, 100);
 
-setInterval(() => {
-	// console.log("test")
-	currentMs = (new Date()).getTime();
-	matches = matches.map(match => {
-		if (currentMs >= match.start && match.end === 0){
-			// console.log("change to ongoing");
-			match.status = 'Ongoing';
-		}
-		if (match.status === 'Ongoing'){
-			if (Math.random()>0.9) match.scores[0] += 1;
-			if (Math.random()>0.9) match.scores[1] += 1
-			
-		}
-		return match
-	})
-	fs.writeFile(path.join(DIR_PATH, 'data.json'), JSON.stringify(matches), (err) => {
-		if (err) return console.log(err);
-	});
-}, 1000);
+
