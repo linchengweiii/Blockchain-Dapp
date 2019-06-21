@@ -10,46 +10,46 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.get("/games_data", (req, res)=>{
-	res.json(games);
+app.get("/matches_data", (req, res)=>{
+	res.json(matches);
 })
 
-app.get("/game_data/:gameId", (req, res)=>{
-	game = games.find(g=>g.id === parseInt(req.params.gameId));
-	res.json(game);
+app.get("/match_data/:matchId", (req, res)=>{
+	match = matches.find(g=>g.id === parseInt(req.params.matchId));
+	res.json(match);
 })
 
 app.get("/result", (req,res)=>{
-	game = games.find(g=>g.id === parseInt(req.query.id));
-	res.json(game.result);
+	match = matches.find(g=>g.id === parseInt(req.query.id));
+	res.json(match.result);
 })
 
 app.get("/score", (req,res)=>{
-	game = games.find(g=>g.id === parseInt(req.query.id));
-	res.json(game.scores)
+	match = matches.find(g=>g.id === parseInt(req.query.id));
+	res.json(match.scores)
 })
 
 app.get("/status", (req,res)=>{
-	game = games.find(g=>g.id === parseInt(req.query.id));
-	res.json(game.status)
+	match = matches.find(g=>g.id === parseInt(req.query.id));
+	res.json(match.status)
 })
 
 app.get("/start", (req,res)=>{
-	game = games.find(g=>g.id === parseInt(req.query.id));
+	match = matches.find(g=>g.id === parseInt(req.query.id));
 	// timeString = (new Date())
-	res.send({start: game.start})
+	res.send({start: match.start})
 })
 
 app.get("/end", (req,res)=>{
-	game = games.find(g=>g.id === parseInt(req.query.id));
+	match = matches.find(g=>g.id === parseInt(req.query.id));
 	// timeString = (new Date())
-	res.send({start: game.end})
+	res.send({start: match.end})
 })
 
 app.get("/type", (req,res)=>{
-	game = games.find(g=>g.id === parseInt(req.query.id));
+	match = matches.find(g=>g.id === parseInt(req.query.id));
 	// timeString = (new Date())
-	res.send({start: game.type})
+	res.send({start: match.type})
 })
 
 server = app.listen(port , () => console.log('Server listening on port ' + port))
@@ -65,7 +65,7 @@ var stdin = process.stdin;
 var cmdBuf = '';
 var statusBuf = '';
 var currentId = 5;
-var games = [];
+var matches = [];
 
 stdin.setRawMode(true);
 stdin.resume();
@@ -92,7 +92,7 @@ stdin.on('data', function(key) {
 			else{
 				timeString = arr[4] + ' ' + arr[5]
 				// TODO: handle timeString error
-				newGame = {
+				newMatch = {
 					id: currentId,
 					type: arr[1],
 					teams: [arr[2], arr[3]],
@@ -101,8 +101,8 @@ stdin.on('data', function(key) {
 					result: -1, // -1 for unended, 0 or 1 for the winning team
 					status: 'Ready'  // ready, ongoing, end
 				}
-				games.push(newGame);
-				statusBuf = "Game ID " + currentId.toString() + " is added!";
+				matchess.push(newMatch);
+				statusBuf = "Match ID " + currentId.toString() + " is added!";
 				currentId++;
 			}
 		}
@@ -111,13 +111,13 @@ stdin.on('data', function(key) {
 				statusBuf = "Extra arguments!"
 			}
 			else{
-				newGames = games.filter(game => game.id !== Number(arr[1]))
-				if (newGames.length === games.length){
-					statusBuf = "Game ID " + arr[1] + " not found!";
+				newMatches = matches.filter(match => match.id !== Number(arr[1]))
+				if (newMatches.length === matches.length){
+					statusBuf = "Match ID " + arr[1] + " not found!";
 				}
 				else{
-					statusBuf = "Game ID " + arr[1] + " is deleted!";
-					games = newGames;
+					statusBuf = "Match ID " + arr[1] + " is deleted!";
+					matches = newMatches;
 				}
 			}
 		}
@@ -142,12 +142,12 @@ stdin.on('data', function(key) {
 				statusBuf = "Try \"end ID winning_Team\"";
 			}
 			else {
-				id = games.findIndex(g=>g.id === Number(arr[1]))
-				if (id === -1) statusBuf = "Game ID " + arr[1] + " not found!";
+				id = matches.findIndex(g=>g.id === Number(arr[1]))
+				if (id === -1) statusBuf = "Match ID " + arr[1] + " not found!";
 				else{
-					games[id].end = (new Date()).getTime();
-					games[id].status = "End";
-					games[id].result = (games[id].teams[0] === arr[2])?0:1;
+					matches[id].end = (new Date()).getTime();
+					matches[id].status = "End";
+					matches[id].result = (matches[id].teams[0] === arr[2])?0:1;
 				}
 			}
 		}
@@ -157,21 +157,21 @@ stdin.on('data', function(key) {
 		cmdBuf = '';
 	}
 })
-// displayGames = [];
+// displaymatchs = [];
 
 function init(dir_path=DIR_PATH){
 	try {
 		fs.readFile(path.join(dir_path, 'data.json'), (err, data) => {  
 			if (err){
 				console.log("data.json not found, new data.json created!");
-				games = init_games();
-				fs.writeFile(path.join(dir_path, 'data.json'), JSON.stringify(games), (err) => {
+				macthes = init_matches();
+				fs.writeFile(path.join(dir_path, 'data.json'), JSON.stringify(matches), (err) => {
 					if (err) return console.log(err);
 				});
 			}
 			else{
 				console.log("Found data.json!")
-				games = JSON.parse(data);
+				matches = JSON.parse(data);
 			}	
 		});
 	}
@@ -180,10 +180,10 @@ function init(dir_path=DIR_PATH){
 	}
 }
 
-function init_games(){
-	let new_games = [];
+function init_matches(){
+	let new_matches = [];
 	for (var i = 0;i<5;i++){
-		new_games.push(
+		new_matches.push(
 			{
 				id: i,
 				type: 'LoL',
@@ -196,7 +196,7 @@ function init_games(){
 			}
 		)
 	}
-	return new_games;
+	return new_matches;
 }
 	
 
@@ -218,7 +218,7 @@ setInterval(() => {
 		.fill()
 		.store();
     line = new Line(outputBuffer)
-        .column('Game ID', 8, [clc.whiteBright])
+        .column('ID', 4, [clc.whiteBright])
         .column('Type', 8, [clc.whiteBright])
 		.column('Team 1', 10, [clc.whiteBright])
 		.column('Team 2', 10, [clc.whiteBright])
@@ -229,19 +229,19 @@ setInterval(() => {
 		.column('Status', 8, [clc.whiteBright])
         .fill()
         .store();
-    for(var i = 0; i < games.length; ++i) {
+    for(var i = 0; i < matches.length; ++i) {
         line = new Line(outputBuffer)
-			.column(games[i].id.toString(), 8, [clc.green])
-			.column(games[i].type, 8, [clc.green])
-			.column(games[i].teams[0], 10, [clc.cyan])
-			.column(games[i].teams[1], 10, [clc.red])
-			.column(games[i].scores[0].toString(), 2, [clc.cyan])
+			.column(matches[i].id.toString(), 4, [clc.green])
+			.column(matches[i].type, 8, [clc.green])
+			.column(matches[i].teams[0], 10, [clc.cyan])
+			.column(matches[i].teams[1], 10, [clc.red])
+			.column(matches[i].scores[0].toString(), 2, [clc.cyan])
 			.column(':', 1, [clc.white])
-			.column(games[i].scores[1].toString(), 4, [clc.red])
-			.column(ms2ds(games[i].start), 20, [clc.green])
-			.column(games[i].end==0?'Not Ended Yet':ms2ds(games[i].end), 20, [clc.green])
-			.column(games[i].result==-1?'Unknown':games[i].teams[games[i].result]+" wins", 12, [clc.green])
-			.column(games[i].status, 8, [clc.green])
+			.column(matches[i].scores[1].toString(), 4, [clc.red])
+			.column(ms2ds(matches[i].start), 20, [clc.green])
+			.column(matches[i].end==0?'Not Ended Yet':ms2ds(matches[i].end), 20, [clc.green])
+			.column(matches[i].result==-1?'Unknown':matches[i].teams[matches[i].result]+" wins", 12, [clc.green])
+			.column(matches[i].status, 8, [clc.green])
             .fill()
             .store();
     }
@@ -259,19 +259,19 @@ setInterval(() => {
 setInterval(() => {
 	// console.log("test")
 	currentMs = (new Date()).getTime();
-	games = games.map(game => {
-		if (currentMs >= game.start && game.end === 0){
+	matches = matches.map(match => {
+		if (currentMs >= match.start && match.end === 0){
 			// console.log("change to ongoing");
-			game.status = 'Ongoing';
+			match.status = 'Ongoing';
 		}
-		if (game.status === 'Ongoing'){
-			if (Math.random()>0.9) game.scores[0] += 1;
-			if (Math.random()>0.9) game.scores[1] += 1
+		if (match.status === 'Ongoing'){
+			if (Math.random()>0.9) match.scores[0] += 1;
+			if (Math.random()>0.9) match.scores[1] += 1
 			
 		}
-		return game
+		return match
 	})
-	fs.writeFile(path.join(DIR_PATH, 'data.json'), JSON.stringify(games), (err) => {
+	fs.writeFile(path.join(DIR_PATH, 'data.json'), JSON.stringify(matches), (err) => {
 		if (err) return console.log(err);
 	});
 }, 1000);
