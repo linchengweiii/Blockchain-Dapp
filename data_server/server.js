@@ -205,6 +205,57 @@ function init(dir_path=DIR_PATH){
 						if (err) return console.log(err);
 					});
 		}, 1000);
+		setInterval(() => {
+			var outputBuffer = new LineBuffer({
+				x: 0,
+				y: 0,
+				width: 'console',
+				height: 'console'
+			});
+			var line;
+			line = new Line(outputBuffer)
+				.column('System Time:', 14, [clc.yellowBright])
+				.column((new Date()).toLocaleString(), 20, [clc.yellowBright])
+				.fill()
+				.store();
+			line = new Line(outputBuffer)
+				.column('ID', 4, [clc.whiteBright])
+				.column('Type', 8, [clc.whiteBright])
+				.column('Team 1', 10, [clc.whiteBright])
+				.column('Team 2', 10, [clc.whiteBright])
+				.column('Score', 7, [clc.whiteBright])
+				.column('Start Time', 20, [clc.whiteBright])
+				.column('End Time', 20, [clc.whiteBright])
+				.column('Result', 12, [clc.whiteBright])
+				.column('Status', 8, [clc.whiteBright])
+				.fill()
+				.store();
+			for(var i = 0; i < matches.length; ++i) {
+				line = new Line(outputBuffer)
+					.column(matches[i].id.toString(), 4, [clc.green])
+					.column(matches[i].type, 8, [clc.green])
+					.column(matches[i].teams[0], 10, [clc.cyan])
+					.column(matches[i].teams[1], 10, [clc.red])
+					.column(matches[i].scores[0].toString(), 2, [clc.cyan])
+					.column(':', 1, [clc.white])
+					.column(matches[i].scores[1].toString(), 4, [clc.red])
+					.column(ms2ds(matches[i].start), 20, [clc.green])
+					.column(matches[i].end==0?'Not Ended Yet':ms2ds(matches[i].end), 20, [clc.green])
+					.column(matches[i].result==-1?'Unknown':matches[i].teams[matches[i].result]+" wins", 12, [clc.green])
+					.column(matches[i].status, 8, [clc.green])
+					.fill()
+					.store();
+			}
+			line = new Line(outputBuffer)
+				.column(cmdBuf, 100)
+				.fill()
+				.store();
+			line = new Line(outputBuffer)
+				.column(statusBuf, 100, [clc.bgCyanBright, clc.yellow])
+				.fill()
+				.store();
+			outputBuffer.output();
+		}, 100);
 	});
 }
 
@@ -232,57 +283,5 @@ function init_matches(){
 function ms2ds(ms){
 	return (new Date(ms)).toLocaleString();
 }
-
-setInterval(() => {
-    var outputBuffer = new LineBuffer({
-        x: 0,
-        y: 0,
-        width: 'console',
-        height: 'console'
-    });
-	var line;
-	line = new Line(outputBuffer)
-		.column('System Time:', 14, [clc.yellowBright])
-		.column((new Date()).toLocaleString(), 20, [clc.yellowBright])
-		.fill()
-		.store();
-    line = new Line(outputBuffer)
-        .column('ID', 4, [clc.whiteBright])
-        .column('Type', 8, [clc.whiteBright])
-		.column('Team 1', 10, [clc.whiteBright])
-		.column('Team 2', 10, [clc.whiteBright])
-		.column('Score', 7, [clc.whiteBright])
-		.column('Start Time', 20, [clc.whiteBright])
-		.column('End Time', 20, [clc.whiteBright])
-		.column('Result', 12, [clc.whiteBright])
-		.column('Status', 8, [clc.whiteBright])
-        .fill()
-        .store();
-    for(var i = 0; i < matches.length; ++i) {
-        line = new Line(outputBuffer)
-			.column(matches[i].id.toString(), 4, [clc.green])
-			.column(matches[i].type, 8, [clc.green])
-			.column(matches[i].teams[0], 10, [clc.cyan])
-			.column(matches[i].teams[1], 10, [clc.red])
-			.column(matches[i].scores[0].toString(), 2, [clc.cyan])
-			.column(':', 1, [clc.white])
-			.column(matches[i].scores[1].toString(), 4, [clc.red])
-			.column(ms2ds(matches[i].start), 20, [clc.green])
-			.column(matches[i].end==0?'Not Ended Yet':ms2ds(matches[i].end), 20, [clc.green])
-			.column(matches[i].result==-1?'Unknown':matches[i].teams[matches[i].result]+" wins", 12, [clc.green])
-			.column(matches[i].status, 8, [clc.green])
-            .fill()
-            .store();
-    }
-    line = new Line(outputBuffer)
-        .column(cmdBuf, 100)
-        .fill()
-        .store();
-    line = new Line(outputBuffer)
-        .column(statusBuf, 100, [clc.bgCyanBright, clc.yellow])
-        .fill()
-        .store();
-    outputBuffer.output();
-}, 100);
 
 
