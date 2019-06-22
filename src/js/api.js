@@ -46,8 +46,8 @@ function startApp() {
     })
 }
 
-export async function holdNewLot() {
-    const transaction = await lotteryContract.methods.holdNewLot().send({from: userAccount})
+export async function holdNewLot(matchId) {
+    const transaction = await lotteryContract.methods.holdNewLot(matchId).send({from: userAccount})
     // await console.log(transaction)
 }
 
