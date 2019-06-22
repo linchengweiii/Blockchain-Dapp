@@ -9,14 +9,17 @@ import Match from './contents/Match'
 
 class Content extends Component {
 	state = {
-		held: [1,2,3]
+		held: []
+	}
+	holdMatch = matchId => {
+		this.setState( prevState => ({ held: [...prevState.held, matchId] }))
 	}
 	render() {
 		return (
 			<div>
 				<Switch>
 					<Route exact path='/' render={() => <Home />} />
-					<Route path='/holdable_matches' render={() => <Matches progress='hold' held={this.state.held}/>} />
+					<Route path='/holdable_matches' render={() => <Matches progress='hold' holdMatch={this.holdMatch} held={this.state.held}/>} />
 					<Route path='/bettable_games' render={() => <Matches progress='bet' held={this.state.held}/>} />
 					<Route path='/ongoing_games' render={() => <Matches progress='observe' held={this.state.held}/>} />
 					<Route path='/ended_games' render={() => <Matches progress='result' held={this.state.held}/>} />

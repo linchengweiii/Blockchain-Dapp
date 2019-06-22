@@ -72,9 +72,18 @@ class Matches extends Component {
 		var url = '/matches/' + matchId
 		this.props.history.push(url)
 	}
+	holdMatch = matchId => {
+		if (this.props.progress !== 'hold' ){
+			console.log('hold error')
+			return
+		}
+		this.props.holdMatch(matchId)
+	}
 	render() {
 		var matches = this.state.matches.map((content) => (
-			<MatchBlock onClick={()=>this.chooseMatch(content.id)}
+			<MatchBlock chooseMatch={() => this.chooseMatch(content.id)}
+									holdMatch={() => this.holdMatch(content.id)}
+									progress={this.props.progress}
 									type={content.type}
 									teams={content.teams} 
 									key={content.id}/>
