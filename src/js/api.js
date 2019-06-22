@@ -1,4 +1,4 @@
-export let lotteryContract, userAccount;
+export let lotteryContract, userAccount, matchId2gameId = {};
 let web3js = window.web3js;
 
 export function load(){
@@ -28,7 +28,11 @@ function startApp() {
     lotteryContract = new web3js.eth.Contract(lotteryAbi, lotteryAddress);
     lotteryContract.events.NewGameCreated()
     .on("data", function(event) {
-        let id = event.returnValues.gameIndex;
+        let gameId = event.returnValues.gameIndex;
+        let matchId = event.returnValues.matchId;
+        console.log(gameId);
+        console.log(matchId);
+        matchId2gameId[matchId] = gameId;
         document.getElementById("gameNum").innerHTML = id.toString();
     })
     lotteryContract.events.SuccessfullyBet()
@@ -43,8 +47,8 @@ function startApp() {
     })
 }
 
-export async function holdNewLot() {
-    const transaction = await lotteryContract.methods.holdNewLot().send({from: userAccount})
+export async function holdNewLot(matchId) {
+    const transaction = await lotteryContract.methods.holdNewLot(matchId).send({from: userAccount})
     // await console.log(transaction)
 }
 
