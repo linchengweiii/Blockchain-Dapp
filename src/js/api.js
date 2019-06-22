@@ -7,7 +7,6 @@ export function load(){
         web3js.currentProvider.enable()
         web3js.eth.getAccounts()
         .then((acc)=>{
-            console.log(acc);
             userAccount = acc[0];
             startApp();
         })
@@ -25,13 +24,11 @@ function startApp() {
             userAccount = acc[0];
         })
     }, 200)
-    var lotteryAddress = "0xc102aB400C3bfa6C126B31917337E50B49E513b3";
+    var lotteryAddress = "0xb2Aa5058358368b3Bd1828E1cA8db2EBD872Cc5c";
     lotteryContract = new web3js.eth.Contract(lotteryAbi, lotteryAddress);
-    console.log(lotteryContract)
     lotteryContract.events.NewGameCreated()
     .on("data", function(event) {
         let id = event.returnValues.gameIndex;
-        console.log(id)
         document.getElementById("gameNum").innerHTML = id.toString();
     })
     lotteryContract.events.SuccessfullyBet()
