@@ -48,8 +48,9 @@ function startApp() {
 }
 
 export async function holdNewLot(matchId) {
+		console.log('check')
     const transaction = await lotteryContract.methods.holdNewLot(matchId).send({from: userAccount})
-    // await console.log(transaction)
+		console.log(transaction)
 }
 
 export async function bet(gameId, betAmount, team) {

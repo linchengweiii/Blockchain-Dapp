@@ -17,15 +17,19 @@ $tertiary-color: hsl(50, 90%, 60%);
 html {
 	margin: 0;
 	padding: 0;
-	background: $primary-color;
+	background: $washed-green;
 	color: $secondary-color;
 }
 
 body {
 	margin: 0;
 	padding: 0;
-	background: $primary-color;
+	background: $washed-green;
 	color: $secondary-color;
+}
+
+input {
+	outline: none;
 }
 
 .cursor-point {

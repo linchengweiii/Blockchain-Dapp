@@ -5,32 +5,7 @@ import MatchBlock from './MatchBlock'
 
 class Matches extends Component {
 	state = {
-		matches: [
-			{
-				id: 0,
-				type: 'LOL',
-				teams: ['IG', 'TPA'],
-				status: 'Ready'
-			},
-			{
-				id: 1,
-				type: 'LOL',
-				teams: ['RNG', 'EDG'],
-				status: 'Ready'
-			},
-			{
-				id: 2, 
-				type: 'NBA',
-				teams: ['Warriors', 'Raptors'],
-				status: 'Ongoing'
-			},
-			{
-				id: 3,
-				type: 'HeartStone',
-				teams: ['tom60229', 'Roger'],
-				status: 'End'
-			}
-		]
+		matches: []
 	}
 	fetchAndProcess = async() => {
 		var response = await fetch('/matches_data')
@@ -58,7 +33,6 @@ class Matches extends Component {
 					break
 			}
 		}
-		console.log(matches)
 		this.setState( () => ({ matches: matches }))
 	}
 	componentDidMount = () => {
@@ -89,7 +63,7 @@ class Matches extends Component {
 									key={content.id}/>
 		))
 		return(
-			<div className='font-sec fl-col align-center'>
+			<div className='mr-50 font-sec fl-col align-center'>
 				{matches}
 			</div>
 		)

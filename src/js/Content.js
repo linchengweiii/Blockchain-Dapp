@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Switch, Route } from 'react-router-dom'
+import * as Contract from './api'
 
 import Home from './contents/Home'
 import Matches from './contents/Matches'
@@ -12,6 +13,7 @@ class Content extends Component {
 		held: []
 	}
 	holdMatch = matchId => {
+		Contract.holdNewLot(matchId)
 		this.setState( prevState => ({ held: [...prevState.held, matchId] }))
 	}
 	render() {

@@ -11,7 +11,9 @@ class Match extends Component {
 		start: 0,
 		end: 0,
 		result: -1,
-		status: ''
+		status: '',
+
+		value: ['', '']
 	}
 	componentDidMount = async() => {
 		var response = await fetch('/matches_data/' + this.state.id)
@@ -29,42 +31,88 @@ class Match extends Component {
 				response = await fetch('/result?id=' + this.state.id)
 				var result = await response.json()
 				this.setState( () => ({ result: result }))
-				Contract.payback(this.state.id, this.state.result+1, this.state.scores[0], this.state.scores[1])
+
+				response = await fetch('/scores?id=' + this.state.id)
+				var scores = await response.json()
+				this.setState( () => ({ scores: scores }))
+
+				Contract.payback(this.state.id, result+1, scores[0], scores[1])
+
 				clearInterval(this.refreshData)
 			}
+			if ( this.state.status !== status )
+				this.setState( () => ({ status: status }))
 		}, 1000)
 	}
 	componentWillUnmount = () => {
 		clearInterval(this.refreshData)
 	}
+	handleInput = (e, teamId) => {
+		const regex = /^([0-9]+([.][0-9]*)?|[.][0-9]+)$/
+
+		if (e.target.value === '' || regex.test(e.target.value)){
+			var value = this.state.value
+			value[teamId] = e.target.value
+			this.setState(() => ({ value: value }))
+		}
+	}
+	handleKeyDown = (e, teamId) => {
+		// keycode for enter == 13
+		if (e.keyCode === 13){
+			this.bet(teamId)
+			var value = this.state.value
+			value[teamId] = ''
+			this.setState( () => ({ value: value }))
+		}
+	}
 	bet = teamId => {
-		Contract.bet(this.state.id, this.betAmount.value, teamId+1)
+		var betAmount = parseFloat(this.state.value[teamId])
+		Contract.bet(this.state.id, betAmount, teamId+1)
 	}
 	render() {
+		var content
+		var bet = []
+		for (let i = 0; i < 2; ++i) {
+			bet.push(
+				<input className='mr-0-20 pd-10-30 fl-1-1 h-30' 
+							 placeholder='BET'
+							 value={this.state.value[i]}
+							 key={i}
+							 onKeyDown={e => this.handleKeyDown(e, i)}
+							 onChange={e => this.handleInput(e, i)}/>
+			)
+		}
+		switch(this.state.status) {
+			case 'Ready':
+				content = (
+					<div className='fl-row w-600'>
+						{bet}
+					</div>
+				)
+				break
+			case 'Ongoing':
+			case 'End':
+				content = (
+					<div className='fl-row w-600'>
+						<h1 className='pd-0-20 w-300 fl-1-1 t-center'>{this.state.scores[0]}</h1>
+						<h1 className='pd-0-20 w-300 fl-1-1 t-center'>{this.state.scores[1]}</h1>
+					</div>
+				)
+				break
+			default:
+				break
+		}
 		return (
 			<div>
 				<div className='font-num fl-col align-center'>
 					<div>
-						<h2>{this.state.type}</h2>
+						<h1>{this.state.type}</h1>
 					</div>
-					<div className='fl-row'>
-						<h1 className='pd-0-20'>{this.state.teams[0]}</h1>
-						<h1 className='pd-0-20'>{this.state.teams[1]}</h1>
+					<div className='fl-row w-600'>
+						<h2 className='pd-0-20 w-300 fl-1-1 t-center'>{this.state.teams[0]}</h2>
+						<h2 className='pd-0-20 w-300 fl-1-1 t-center'>{this.state.teams[1]}</h2>
 					</div>
-					<div className='fl-row'>
-						<h1 className='pd-0-20'>{this.state.scores[0]}</h1>
-						<h1>:</h1>
-						<h1 className='pd-0-20'>{this.state.scores[1]}</h1>
-					</div>
-					<div className='fl-col'>
-						<div className='fl-row'>
-							<input type='text' placeholder='BetAmount' ref={el=>this.betAmount=el} />
-						</div>
-						<div className='fl-row'>
-							<button className='pd-0-20' onClick={()=>this.bet(0)}>{'bet '+this.state.teams[0]}</button>
-							<button className='pd-0-20' onClick={()=>this.bet(1)}>{'bet '+this.state.teams[1]}</button>
-						</div>
-					</div>
+					{content}
 				</div>
 			</div>
 		)
