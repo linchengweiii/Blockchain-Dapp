@@ -12,6 +12,14 @@ class Content extends Component {
 	state = {
 		held: []
 	}
+	componentDidMount = async() => {
+		var response = await fetch('/held')
+		var gameId2matchId = await response.json()
+		for ( const [key, value] of gameId2matchId.entries() ) {
+			if (!held.includes(value))
+				this.setState( prevState => ({ held: [...prevState.held, value] }))
+		}
+	}
 	holdMatch = matchId => {
 		Contract.holdNewLot(matchId)
 		this.setState( prevState => ({ held: [...prevState.held, matchId] }))

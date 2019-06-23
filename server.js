@@ -103,6 +103,10 @@ app.get('/api/addmatch', (req, res) => {
 	gameId2matchId[req.query.gameId] = req.query.matchId;
 })
 
+app.get('/held', (req, res) => {
+	res.json(gameId2matchId)
+})
+
 
 
 server = app.listen(port , () => console.log('Listening on port ' + port))
