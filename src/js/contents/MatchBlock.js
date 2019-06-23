@@ -79,7 +79,7 @@ class MatchBlock extends Component {
 			)
 		}
 		return (
-			<div className='pd-0-40 w-800 h-80 fl-row fl-center align-center cursor-point hv-bg-light-green' 
+			<div className='mr-5-0 pd-0-40 w-800 h-80 fl-row fl-center align-center cursor-point hv-bg-green radius-20' 
 					 onClick={this.handleOnClick}
 					 onMouseEnter={this.mouseover}
 					 onMouseLeave={this.mouseout}

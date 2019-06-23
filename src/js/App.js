@@ -17,7 +17,7 @@ class App extends Component {
 			{ url: '/bettable_games'			, text: 'Bettable Games' },
 			{ url: '/ongoing_games'				, text: 'Ongoing Games' },
 			{ url: '/ended_games'					, text: 'Ended Games' },
-			{ url: '/login'								, text: 'Login' },
+			//{ url: '/login'								, text: 'Login' },
 		]
 	}
 	componentDidMount(){

@@ -1,3 +1,19 @@
+.button-up:hover, .button-up:focus, .button-up:active {
+  -webkit-transform: translateY(-4px);
+  transform: translateY(-4px);
+}
+
+.button-up {
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+  transition-duration: 0.4s;
+}
+
 .animated {
 	-webkit-animation-duration: 1s;
 	animation-duration: 1s;
