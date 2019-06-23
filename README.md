@@ -12,3 +12,8 @@
 	$ cd ../
 	$ npm install
 	$ npm start		// start the web server
+
+## Instruction
+* Anyone can hold any game in the data server
+* Only games hold by someone is able to be bet
+* Only be able to bet games that haven't start yet
