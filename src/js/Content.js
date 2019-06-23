@@ -16,7 +16,7 @@ class Content extends Component {
 		var response = await fetch('/held')
 		var gameId2matchId = await response.json()
 		for ( var key in gameId2matchId ) {
-			if (!held.includes(gameId2matchId[key]))
+			if (!this.state.held.includes(gameId2matchId[key]))
 				this.setState( prevState => ({ held: [...prevState.held, gameId2matchId[key]] }))
 		}
 	}
