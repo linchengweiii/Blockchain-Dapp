@@ -252,7 +252,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 709,
+                        "referencedDeclaration": 728,
                         "src": "686:3:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -578,10 +578,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        712,
-                        713
+                        731,
+                        732
                       ],
-                      "referencedDeclaration": 713,
+                      "referencedDeclaration": 732,
                       "src": "1045:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -652,7 +652,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 709,
+                        "referencedDeclaration": 728,
                         "src": "1271:3:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -1276,10 +1276,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        712,
-                        713
+                        731,
+                        732
                       ],
-                      "referencedDeclaration": 713,
+                      "referencedDeclaration": 732,
                       "src": "2228:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -1652,7 +1652,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 709,
+                        "referencedDeclaration": 728,
                         "src": "686:3:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -1978,10 +1978,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        712,
-                        713
+                        731,
+                        732
                       ],
-                      "referencedDeclaration": 713,
+                      "referencedDeclaration": 732,
                       "src": "1045:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -2052,7 +2052,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 709,
+                        "referencedDeclaration": 728,
                         "src": "1271:3:1",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -2676,10 +2676,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        712,
-                        713
+                        731,
+                        732
                       ],
-                      "referencedDeclaration": 713,
+                      "referencedDeclaration": 732,
                       "src": "2228:7:1",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
@@ -2889,7 +2889,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-06-11T07:45:04.684Z",
+  "updatedAt": "2019-06-22T08:58:20.621Z",
   "devdoc": {
     "details": "Contract module which provides a basic access control mechanism, where\r there is an account (an owner) that can be granted exclusive access to\r specific functions.\r  * This module is used through inheritance. It will make available the modifier\r `onlyOwner`, which can be aplied to your functions to restrict their use to\r the owner.\r",
     "methods": {

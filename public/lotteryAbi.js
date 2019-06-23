@@ -60,6 +60,11 @@ var lotteryAbi = [
       },
       {
         "indexed": false,
+        "name": "matchId",
+        "type": "uint32"
+      },
+      {
+        "indexed": false,
         "name": "gameIndex",
         "type": "uint32"
       }
@@ -152,7 +157,12 @@ var lotteryAbi = [
   },
   {
     "constant": false,
-    "inputs": [],
+    "inputs": [
+      {
+        "name": "_matchId",
+        "type": "uint32"
+      }
+    ],
     "name": "holdNewLot",
     "outputs": [
       {

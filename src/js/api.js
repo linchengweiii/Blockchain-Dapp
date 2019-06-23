@@ -24,7 +24,7 @@ function startApp() {
             userAccount = acc[0];
         })
     }, 200)
-    var lotteryAddress = "0xb2Aa5058358368b3Bd1828E1cA8db2EBD872Cc5c";
+    var lotteryAddress = "0x1Df16fEfB1453cdeA8261Bf1eC157559486767d8";
     lotteryContract = new web3js.eth.Contract(lotteryAbi, lotteryAddress);
     lotteryContract.events.NewGameCreated()
     .on("data", function(event) {
@@ -33,7 +33,6 @@ function startApp() {
         console.log(gameId);
         console.log(matchId);
         matchId2gameId[matchId] = gameId;
-        document.getElementById("gameNum").innerHTML = id.toString();
     })
     lotteryContract.events.SuccessfullyBet()
     .on("data", function(event) {
@@ -48,9 +47,9 @@ function startApp() {
 }
 
 export async function holdNewLot(matchId) {
-		console.log('check')
+	console.log('check')
     const transaction = await lotteryContract.methods.holdNewLot(matchId).send({from: userAccount})
-		console.log(transaction)
+	console.log(transaction)
 }
 
 export async function bet(gameId, betAmount, team) {
