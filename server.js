@@ -1,9 +1,11 @@
 var express = require('express')
 var path = require('path')
 var fetch = require('node-fetch')
+var fs = require('fs')
 var app = express()
 var bodyParser = require('body-parser')
 var port = process.env.PORT || 3000
+var gameId2matchId = {};
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.json())
@@ -75,7 +77,7 @@ app.get('/matches_data/:matchId', async(req, res) => {
 	var match_data = await response.json()
 	res.json(match_data)
 })
-app.get('/matches_data', async (req, res) => {
+app.get('/matches_data', async(req, res) => {
 	var response = await fetch('http://localhost:3001/matches_data')
 	var games = await response.json()
 	res.json(games)
@@ -96,6 +98,30 @@ app.get('/status', async(req, res) => {
 	res.json(status)
 })
 
+app.get('/api/addmatch', (req, res) => {
+	console.log(req.query);
+	gameId2matchId[req.query.gameId] = req.query.matchId;
+})
+
 
 
 server = app.listen(port , () => console.log('Listening on port ' + port))
+
+fs.readFile(path.join('db', 'gameId2matchId.json'), (err, jsondata) => {  
+	if (err){
+		console.log("json file not found, new json file created!");		
+		let new_data = {};
+		fs.writeFile(path.join('db', 'gameId2matchId.json'), JSON.stringify(new_data), (err) => {
+			if (err) return console.log(err);
+		});
+	}
+	else{
+		console.log("Found data.json!");
+		gameId2matchId = JSON.parse(jsondata);
+	}
+	setInterval(()=>{
+		fs.writeFile(path.join('db', 'gameId2matchId.json'), JSON.stringify(gameId2matchId), (err) => {
+			if (err) return console.log(err);
+		});
+	}, 1000)
+})

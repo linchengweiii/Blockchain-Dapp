@@ -25,10 +25,10 @@ contract Lottery is Ownable {
     event Transfer(address indexed addr, uint transferAmount);
 
     /* public functions */
-    function holdNewLot (uint32 matchId) public returns (uint32) {
+    function holdNewLot (uint32 _matchId) public returns (uint32) {
         // first bet of each game is the information of the game
         game2Bets[numGames].push(Bet(0,0,msg.sender));
-        emit NewGameCreated(msg.sender, matchId, numGames);
+        emit NewGameCreated(msg.sender, _matchId, numGames);
         numGames++;
         return numGames - 1;
     }
