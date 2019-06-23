@@ -15,12 +15,12 @@ class Content extends Component {
 	componentDidMount = async() => {
 		var response = await fetch('/held')
 		var gameId2matchId = await response.json()
-		console.log(gameId2matchId)
+		// console.log(gameId2matchId)
 		for ( var key in gameId2matchId ) {
-			console.log(key)
-			console.log(gameId2matchId[key])
-			if (!this.state.held.includes(gameId2matchId[key]))
-				this.setState( prevState => ({ held: [...prevState.held, gameId2matchId[key]] }))
+			// console.log(key)
+			// console.log(gameId2matchId[key])
+			if (!this.state.held.includes(parseInt(gameId2matchId[key])))
+				this.setState( prevState => ({ held: [...prevState.held, parseInt(gameId2matchId[key])] }))
 		}
 	}
 	holdMatch = matchId => {

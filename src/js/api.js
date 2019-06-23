@@ -24,7 +24,7 @@ function startApp() {
             userAccount = acc[0];
         })
     }, 200)
-    var lotteryAddress = "0x7663802B7A0c620157bE0fE708f2b201914C8aA7";
+    var lotteryAddress = "0x7CcF3e2dCFf2a9084B712D33048C037c5a3A4889";
     lotteryContract = new web3js.eth.Contract(lotteryAbi, lotteryAddress);
     lotteryContract.events.NewGameCreated()
     .on("data", function(event) {

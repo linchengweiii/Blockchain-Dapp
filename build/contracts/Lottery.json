@@ -15372,12 +15372,12 @@
         }
       },
       "links": {},
-      "address": "0x7663802B7A0c620157bE0fE708f2b201914C8aA7",
-      "transactionHash": "0x4e87f23a9b94242390492d470656510b728a467f6de5a094009e51f167f81c5f"
+      "address": "0x7CcF3e2dCFf2a9084B712D33048C037c5a3A4889",
+      "transactionHash": "0x7c3b1cd7512e1b757039ced202828d289d33e47111b9694efdcbc60c6627fd10"
     }
   },
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-06-23T13:48:53.352Z",
+  "updatedAt": "2019-06-23T15:32:00.766Z",
   "devdoc": {
     "methods": {
       "isOwner()": {

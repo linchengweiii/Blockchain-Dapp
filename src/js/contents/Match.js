@@ -36,7 +36,17 @@ class Match extends Component {
 				var scores = await response.json()
 				this.setState( () => ({ scores: scores }))
 
-				Contract.payback(this.state.id, result+1, scores[0], scores[1])
+				var res = await fetch('/held')
+				var gameId2matchId = await res.json()
+				var gameId;
+				for (var k in gameId2matchId){
+					if (gameId2matchId[k] == this.state.id){
+						gameId = k;
+						break;
+					}
+				}
+
+				Contract.payback(gameId, result+1, scores[0], scores[1])
 
 				clearInterval(this.refreshData)
 			}
@@ -65,9 +75,18 @@ class Match extends Component {
 			this.setState( () => ({ value: value }))
 		}
 	}
-	bet = teamId => {
+	bet = async (teamId) => {
 		var betAmount = parseFloat(this.state.value[teamId])
-		Contract.bet(this.state.id, betAmount, teamId+1)
+		var res = await fetch('/held')
+		var gameId2matchId = await res.json()
+		var gameId;
+		for (var k in gameId2matchId){
+			if (gameId2matchId[k] == this.state.id){
+				gameId = k;
+				break;
+			}
+		}
+		Contract.bet(gameId, betAmount, teamId+1)
 	}
 	render() {
 		var content
