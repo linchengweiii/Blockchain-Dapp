@@ -100,7 +100,7 @@ app.get('/status', async(req, res) => {
 
 app.get('/api/addmatch', (req, res) => {
 	console.log(req.query);
-	gameId2matchId[req.query.matchId] = req.query.gameId;
+	gameId2matchId[req.query.gameId] = req.query.matchId;
 })
 
 
