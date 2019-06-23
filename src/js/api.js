@@ -24,7 +24,7 @@ function startApp() {
             userAccount = acc[0];
         })
     }, 200)
-		var lotteryAddress = "0xa9215284CACcffeA8bdb53F0E5457a70E5bD2F62";
+    var lotteryAddress = "0x7663802B7A0c620157bE0fE708f2b201914C8aA7";
     lotteryContract = new web3js.eth.Contract(lotteryAbi, lotteryAddress);
     lotteryContract.events.NewGameCreated()
     .on("data", function(event) {
@@ -33,6 +33,7 @@ function startApp() {
         console.log(gameId);
         console.log(matchId);
         fetch(`/api/addmatch?matchId=${matchId}&gameId=${gameId}`)
+        .then(res=>console.log(res))
     })
     lotteryContract.events.SuccessfullyBet()
     .on("data", function(event) {
