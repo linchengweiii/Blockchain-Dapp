@@ -42,6 +42,7 @@ class Match extends Component {
 				for (var k in gameId2matchId){
 					if (gameId2matchId[k] == this.state.id){
 						gameId = k;
+						console.log(k)
 						break;
 					}
 				}
@@ -82,6 +83,7 @@ class Match extends Component {
 		var gameId;
 		for (var k in gameId2matchId){
 			if (gameId2matchId[k] == this.state.id){
+				console.log(k)
 				gameId = k;
 				break;
 			}
