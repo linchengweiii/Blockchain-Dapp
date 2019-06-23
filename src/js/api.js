@@ -33,6 +33,7 @@ function startApp() {
         console.log(gameId);
         console.log(matchId);
         fetch(`/api/addmatch?matchId=${matchId}&gameId=${gameId}`)
+        .then(res=>console.log(res))
     })
     lotteryContract.events.SuccessfullyBet()
     .on("data", function(event) {
