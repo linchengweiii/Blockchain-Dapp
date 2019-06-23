@@ -1,4 +1,4 @@
-export let lotteryContract, userAccount, matchId2gameId = {};
+export let lotteryContract, userAccount;
 let web3js = window.web3js;
 
 export function load(){
@@ -32,7 +32,7 @@ function startApp() {
         let matchId = event.returnValues.matchId;
         console.log(gameId);
         console.log(matchId);
-        matchId2gameId[matchId] = gameId;
+        fetch(`/api/addmatch?matchId=${matchId}&gameId=${gameId}`)
     })
     lotteryContract.events.SuccessfullyBet()
     .on("data", function(event) {
