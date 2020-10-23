@@ -1,1 +1,3 @@
 node_modules/*
+wmfinal_fake_data_server/*
+public/bundle.js
